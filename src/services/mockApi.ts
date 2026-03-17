@@ -20,16 +20,18 @@ export const mockAuthApi = {
   async login(credentials: LoginCredentials): Promise<{ data: AuthResponse }> {
     await delay(MOCK_DELAY);
     
-    if (credentials.email === 'test@lexiassist.com' && credentials.password === 'password') {
-      return {
-        data: {
-          user: mockUser,
-          token: 'mock-jwt-token',
+    // Accept any credentials for development
+    return {
+      data: {
+        user: {
+          id: '1',
+          name: credentials.email.split('@')[0],
+          email: credentials.email,
+          avatar: '',
         },
-      };
-    }
-    
-    throw new Error('Invalid credentials');
+        token: 'mock-jwt-token',
+      },
+    };
   },
 
   async register(credentials: RegisterCredentials): Promise<{ data: AuthResponse }> {

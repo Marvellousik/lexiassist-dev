@@ -22,15 +22,7 @@ function SocialLoginButton({
   return (
     <button
       type="button"
-      className="
-        flex items-center justify-center gap-3 
-        h-12 px-4 sm:px-6
-        bg-white border border-[#D0D5DD] rounded-full 
-        hover:bg-gray-50 hover:border-[#377749]/30 hover:shadow-sm
-        active:scale-[0.98]
-        transition-all duration-200
-        text-sm font-medium text-[#374151]
-      "
+      className="flex items-center justify-center gap-3 h-12 px-4 sm:px-6 bg-white border border-[#D0D5DD] rounded-full hover:bg-gray-50 hover:border-[#377749]/30 hover:shadow-sm active:scale-[0.98] transition-all duration-200 text-sm font-medium text-[#374151]"
     >
       <div className="relative w-5 h-5 flex-shrink-0">
         <Image 
@@ -129,13 +121,7 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your full name"
-                className="
-                  w-full h-12 px-4 rounded-full 
-                  border border-[#D0D5DD] bg-white 
-                  text-sm text-[#101928] placeholder:text-[#98A2B3] 
-                  focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] 
-                  transition-all duration-200
-                "
+                className="w-full h-12 px-4 rounded-full border border-[#D0D5DD] bg-white text-sm text-[#101928] placeholder:text-[#98A2B3] focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] transition-all duration-200"
                 required
               />
             </div>
@@ -154,13 +140,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="
-                  w-full h-12 px-4 rounded-full 
-                  border border-[#D0D5DD] bg-white 
-                  text-sm text-[#101928] placeholder:text-[#98A2B3] 
-                  focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] 
-                  transition-all duration-200
-                "
+                className="w-full h-12 px-4 rounded-full border border-[#D0D5DD] bg-white text-sm text-[#101928] placeholder:text-[#98A2B3] focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] transition-all duration-200"
                 required
               />
             </div>
@@ -180,13 +160,7 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Create a password"
-                  className="
-                    w-full h-12 px-4 pr-12 rounded-full 
-                    border border-[#D0D5DD] bg-white 
-                    text-sm text-[#101928] placeholder:text-[#98A2B3] 
-                    focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] 
-                    transition-all duration-200
-                  "
+                  className="w-full h-12 px-4 pr-12 rounded-full border border-[#D0D5DD] bg-white text-sm text-[#101928] placeholder:text-[#98A2B3] focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] transition-all duration-200"
                   required
                 />
                 <button
@@ -211,14 +185,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="
-                w-full h-12 
-                bg-[#377749] hover:bg-[#2d6340] active:bg-[#265538]
-                text-white font-semibold rounded-full 
-                transition-all duration-200 
-                disabled:opacity-50 disabled:cursor-not-allowed 
-                flex items-center justify-center shadow-sm hover:shadow-md active:scale-[0.98]
-              "
+              className="w-full h-12 bg-[#377749] hover:bg-[#2d6340] active:bg-[#265538] text-white font-semibold rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-sm hover:shadow-md active:scale-[0.98]"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
