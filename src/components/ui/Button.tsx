@@ -1,24 +1,52 @@
-'use client';
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "./utils";
+import { Loader2 } from "lucide-react";
 
-import { cn } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
-import { ButtonHTMLAttributes, forwardRef } from 'react';
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+  {
+    variants: {
+      variant: {
+        default: "bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:ring-indigo-500",
+        destructive: "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500",
+        outline: "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus-visible:ring-slate-500",
+        secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-500",
+        ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+        link: "text-indigo-600 underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-12 rounded-md px-6 text-base",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
+);
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
-      variant = 'primary',
-      size = 'md',
-      isLoading = false,
+      variant,
+      size,
+      asChild = false,
+      isLoading,
       leftIcon,
       rightIcon,
       children,
@@ -27,40 +55,23 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseStyles =
-      'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50';
-
-    const variants = {
-      primary: 'bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800',
-      secondary: 'bg-slate-800 text-white hover:bg-slate-900 active:bg-slate-950',
-      outline:
-        'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900',
-      ghost: 'text-slate-700 hover:bg-slate-100 hover:text-slate-900',
-      danger: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
-    };
-
-    const sizes = {
-      sm: 'h-8 px-3 text-sm',
-      md: 'h-10 px-4 text-sm',
-      lg: 'h-12 px-6 text-base',
-    };
-
+    const Comp = asChild ? Slot : "button";
     return (
-      <button
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        className={cn(baseStyles, variants[variant], sizes[size], className)}
         disabled={disabled || isLoading}
         {...props}
       >
-        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-        {!isLoading && leftIcon}
+        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {!isLoading && leftIcon && <span className="mr-2">{leftIcon}</span>}
         {children}
-        {!isLoading && rightIcon}
-      </button>
+        {!isLoading && rightIcon && <span className="ml-2">{rightIcon}</span>}
+      </Comp>
     );
   }
 );
+Button.displayName = "Button";
 
-Button.displayName = 'Button';
-
+export { Button, buttonVariants };
 export default Button;

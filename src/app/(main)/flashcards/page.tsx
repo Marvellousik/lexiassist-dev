@@ -1,0 +1,434 @@
+'use client';
+
+import { Card, CardContent, CardHeader } from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import { useState } from 'react';
+import {
+  Plus,
+  Shuffle,
+  RotateCcw,
+  ChevronLeft,
+  ChevronRight,
+  FlipHorizontal,
+  Save,
+  Sparkles,
+  Layers,
+  BookOpen,
+  Trash2,
+  Edit3,
+  MoreHorizontal,
+  Check,
+  X,
+} from 'lucide-react';
+import { toast } from 'sonner';
+
+interface Flashcard {
+  id: string;
+  front: string;
+  back: string;
+  category?: string;
+}
+
+interface StudySet {
+  id: string;
+  title: string;
+  description: string;
+  cards: Flashcard[];
+  createdAt: Date;
+}
+
+const sampleCards: Flashcard[] = [
+  {
+    id: '1',
+    front: 'What is photosynthesis?',
+    back: 'The process by which plants convert light energy into chemical energy (glucose), using carbon dioxide and water, releasing oxygen as a byproduct.',
+    category: 'Biology',
+  },
+  {
+    id: '2',
+    front: 'What is the Pythagorean theorem?',
+    back: 'In a right-angled triangle, the square of the hypotenuse equals the sum of the squares of the other two sides: a² + b² = c²',
+    category: 'Mathematics',
+  },
+  {
+    id: '3',
+    front: 'What is the capital of France?',
+    back: 'Paris is the capital and most populous city of France.',
+    category: 'Geography',
+  },
+  {
+    id: '4',
+    front: 'What is Newton\'s First Law?',
+    back: 'An object at rest stays at rest and an object in motion stays in motion with the same speed and direction unless acted upon by an unbalanced force.',
+    category: 'Physics',
+  },
+  {
+    id: '5',
+    front: 'What is mitosis?',
+    back: 'A type of cell division that results in two daughter cells each having the same number and kind of chromosomes as the parent nucleus.',
+    category: 'Biology',
+  },
+];
+
+export default function FlashcardsPage() {
+  const [cards, setCards] = useState<Flashcard[]>(sampleCards);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [studySets, setStudySets] = useState<StudySet[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newCardFront, setNewCardFront] = useState('');
+  const [newCardBack, setNewCardBack] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const currentCard = cards[currentIndex];
+
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  const handleNext = () => {
+    setIsFlipped(false);
+    setCurrentIndex((prev) => (prev + 1) % cards.length);
+  };
+
+  const handlePrevious = () => {
+    setIsFlipped(false);
+    setCurrentIndex((prev) => (prev - 1 + cards.length) % cards.length);
+  };
+
+  const handleShuffle = () => {
+    const shuffled = [...cards].sort(() => Math.random() - 0.5);
+    setCards(shuffled);
+    setCurrentIndex(0);
+    setIsFlipped(false);
+    setIsShuffled(!isShuffled);
+    toast.success(isShuffled ? 'Cards in order' : 'Cards shuffled');
+  };
+
+  const handleReset = () => {
+    setCurrentIndex(0);
+    setIsFlipped(false);
+    if (isShuffled) {
+      setCards(sampleCards);
+      setIsShuffled(false);
+    }
+  };
+
+  const handleAddCard = () => {
+    if (!newCardFront.trim() || !newCardBack.trim()) {
+      toast.error('Please fill in both sides');
+      return;
+    }
+
+    const newCard: Flashcard = {
+      id: Date.now().toString(),
+      front: newCardFront,
+      back: newCardBack,
+    };
+
+    setCards((prev) => [...prev, newCard]);
+    setNewCardFront('');
+    setNewCardBack('');
+    setShowCreateModal(false);
+    toast.success('Card added successfully');
+  };
+
+  const handleGenerateAI = () => {
+    setIsGenerating(true);
+    setTimeout(() => {
+      const aiCards: Flashcard[] = [
+        {
+          id: Date.now().toString(),
+          front: 'What is artificial intelligence?',
+          back: 'The simulation of human intelligence in machines that are programmed to think and learn like humans.',
+          category: 'Technology',
+        },
+        {
+          id: (Date.now() + 1).toString(),
+          front: 'Define machine learning',
+          back: 'A subset of AI that enables systems to learn and improve from experience without being explicitly programmed.',
+          category: 'Technology',
+        },
+      ];
+      setCards((prev) => [...prev, ...aiCards]);
+      setIsGenerating(false);
+      toast.success('AI-generated cards added');
+    }, 1500);
+  };
+
+  const handleSaveSet = () => {
+    const newSet: StudySet = {
+      id: Date.now().toString(),
+      title: 'My Study Set',
+      description: `${cards.length} cards`,
+      cards,
+      createdAt: new Date(),
+    };
+    setStudySets((prev) => [newSet, ...prev]);
+    toast.success('Study set saved');
+  };
+
+  return (
+    <div className="space-y-6 max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Flashcards</h1>
+          <p className="mt-1 text-slate-600">
+            Study with AI-generated flashcards
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowCreateModal(true)}
+            leftIcon={<Plus size={16} />}
+          >
+            Add Card
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleSaveSet}
+            leftIcon={<Save size={16} />}
+          >
+            Save Set
+          </Button>
+        </div>
+      </div>
+
+      {/* Progress */}
+      <div className="flex items-center justify-between text-sm text-slate-500">
+        <span>Card {currentIndex + 1} of {cards.length}</span>
+        <div className="flex gap-2">
+          <button
+            onClick={handleShuffle}
+            className={`p-2 rounded-lg transition-colors ${
+              isShuffled ? 'bg-[#4A8B5C] text-white' : 'hover:bg-slate-100'
+            }`}
+            title="Shuffle"
+          >
+            <Shuffle size={18} />
+          </button>
+          <button
+            onClick={handleReset}
+            className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            title="Reset"
+          >
+            <RotateCcw size={18} />
+          </button>
+        </div>
+      </div>
+
+      {/* Flashcard */}
+      <div className="relative h-80 perspective-1000">
+        <div
+          onClick={handleFlip}
+          className={`relative w-full h-full cursor-pointer transition-transform duration-500 transform-style-3d ${
+            isFlipped ? 'rotate-y-180' : ''
+          }`}
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {/* Front */}
+          <Card
+            className={`absolute inset-0 backface-hidden hover:shadow-lg transition-shadow ${
+              isFlipped ? 'opacity-0' : 'opacity-100'
+            }`}
+            style={{ backfaceVisibility: 'hidden' }}
+          >
+            <CardContent className="h-full flex flex-col items-center justify-center p-8 text-center">
+              <span className="text-xs font-medium text-[#4A8B5C] uppercase tracking-wider mb-4">
+                {currentCard?.category || 'General'}
+              </span>
+              <h3 className="text-xl font-semibold text-slate-900">
+                {currentCard?.front}
+              </h3>
+              <p className="mt-4 text-sm text-slate-400">
+                Click to flip
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Back */}
+          <Card
+            className={`absolute inset-0 backface-hidden bg-[#4A8B5C] text-white hover:shadow-lg transition-shadow ${
+              isFlipped ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ 
+              backfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+            }}
+          >
+            <CardContent className="h-full flex flex-col items-center justify-center p-8 text-center">
+              <h3 className="text-lg leading-relaxed">
+                {currentCard?.back}
+              </h3>
+              <p className="mt-4 text-sm text-white/70">
+                Click to flip back
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <div className="flex items-center justify-center gap-4">
+        <Button
+          variant="outline"
+          onClick={handlePrevious}
+          leftIcon={<ChevronLeft size={18} />}
+        >
+          Previous
+        </Button>
+        <Button
+          onClick={handleFlip}
+          leftIcon={<FlipHorizontal size={18} />}
+        >
+          Flip Card
+        </Button>
+        <Button
+          variant="outline"
+          onClick={handleNext}
+          rightIcon={<ChevronRight size={18} />}
+        >
+          Next
+        </Button>
+      </div>
+
+      {/* Actions */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Card className="cursor-pointer hover:shadow-md transition-all">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
+              <Sparkles className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="font-medium text-slate-900">AI Generate</p>
+              <p className="text-sm text-slate-500">Create cards automatically</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="cursor-pointer hover:shadow-md transition-all">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50">
+              <Shuffle className="h-5 w-5 text-purple-600" />
+            </div>
+            <div>
+              <p className="font-medium text-slate-900">Shuffle Mode</p>
+              <p className="text-sm text-slate-500">Randomize card order</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="cursor-pointer hover:shadow-md transition-all">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
+              <Layers className="h-5 w-5 text-green-600" />
+            </div>
+            <div>
+              <p className="font-medium text-slate-900">Study Sets</p>
+              <p className="text-sm text-slate-500">Organize your cards</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Saved Study Sets */}
+      {studySets.length > 0 && (
+        <Card>
+          <CardHeader title="Your Study Sets" />
+          <CardContent className="p-4">
+            <div className="grid gap-3 sm:grid-cols-2">
+              {studySets.map((set) => (
+                <div
+                  key={set.id}
+                  className="p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="font-medium text-slate-900">{set.title}</h4>
+                      <p className="text-sm text-slate-500">{set.description}</p>
+                    </div>
+                    <BookOpen size={18} className="text-slate-400" />
+                  </div>
+                  <p className="text-xs text-slate-400 mt-2">
+                    Created {new Date(set.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Add Card Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <Card className="w-full max-w-md">
+            <CardHeader
+              title="Create New Card"
+              action={
+                <button
+                  onClick={() => setShowCreateModal(false)}
+                  className="p-1 hover:bg-slate-100 rounded"
+                >
+                  <X size={20} className="text-slate-500" />
+                </button>
+              }
+            />
+            <CardContent className="p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Front (Question)
+                </label>
+                <textarea
+                  value={newCardFront}
+                  onChange={(e) => setNewCardFront(e.target.value)}
+                  placeholder="Enter the question..."
+                  className="w-full p-3 text-sm border border-slate-200 rounded-lg focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none h-20"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Back (Answer)
+                </label>
+                <textarea
+                  value={newCardBack}
+                  onChange={(e) => setNewCardBack(e.target.value)}
+                  placeholder="Enter the answer..."
+                  className="w-full p-3 text-sm border border-slate-200 rounded-lg focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none h-20"
+                />
+              </div>
+              <div className="flex gap-2 pt-2">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={handleAddCard}
+                  leftIcon={<Check size={16} />}
+                >
+                  Add Card
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      <style jsx>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+      `}</style>
+    </div>
+  );
+}

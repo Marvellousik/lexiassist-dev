@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { env } from '@/env';
+import { mockApi } from '@/lib/mockApi';
+
+const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true' || !env.NEXT_PUBLIC_API_GATEWAY_URL;
 
 /**
  * Quiz API Routes
@@ -10,6 +13,12 @@ import { env } from '@/env';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
+    
+    // Use mock API if enabled
+    if (USE_MOCK) {
+      console.log('[MOCK] Get quizzes');
+      return NextResponse.json({ quizzes: mockApi.getQuizzes() });
+    }
     
     const response = await fetch(`${env.NEXT_PUBLIC_API_GATEWAY_URL}/api/quiz?${searchParams.toString()}`, {
       headers: {
@@ -40,6 +49,20 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    
+    // Use mock API if enabled
+    if (USE_MOCK) {
+      console.log('[MOCK] Quiz action:', body.action || 'create');
+      
+      // Handle different quiz actions
+      if (body.action === 'submit') {
+        const result = mockApi.submitQuizAttempt(body.quizId, body.answers);
+        return NextResponse.json(result);
+      }
+      
+      // Default: return mock quiz
+      return NextResponse.json({ quiz: mockApi.getQuizById('1') });
+    }
     
     const response = await fetch(`${env.NEXT_PUBLIC_API_GATEWAY_URL}/api/quiz`, {
       method: 'POST',
