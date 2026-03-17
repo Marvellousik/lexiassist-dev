@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
 import svgPaths, { imgGroup } from './svg-paths';
 
@@ -9,39 +9,83 @@ import svgPaths, { imgGroup } from './svg-paths';
 const imgHeroStudent = '/landing/ec9f20a6dde2af4d8bbb4ba6c62194cc146a41d0.png';
 const imgCtaBackground = '/landing/ab8d6a9743d4e4b36d8deaeeb53ecfe1e606935d.png';
 
-// Animation variants
+// ==========================================
+// ANIMATION VARIANTS
+// ==========================================
+
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
+  }
 };
 
 const fadeInLeft = {
   hidden: { opacity: 0, x: -40 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
+  visible: { 
+    opacity: 1, 
+    x: 0, 
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } 
+  }
 };
 
 const fadeInRight = {
   hidden: { opacity: 0, x: 40 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
+  visible: { 
+    opacity: 1, 
+    x: 0, 
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } 
+  }
+};
+
+const fadeInDown = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } 
+  }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+    transition: { 
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
   }
 };
 
-const scaleOnHover = {
-  scale: 1.03,
-  transition: { duration: 0.3, ease: 'easeOut' }
+const staggerItem = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+  }
 };
 
-const cardHover = {
-  y: -8,
-  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-  transition: { duration: 0.3, ease: 'easeOut' }
+const scaleUp = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+// Continuous floating animation
+const floatAnimation = {
+  y: [0, -10, 0],
+  transition: {
+    duration: 3,
+    repeat: Infinity,
+    ease: "easeInOut"
+  }
 };
 
 // ==========================================
@@ -124,7 +168,7 @@ function Logo({ variant = 'black' }: { variant?: 'black' | 'white' }) {
   );
 }
 
-// Button Component - normalized padding and hover
+// Button Component
 function Button({ children, variant = 'primary', href }: { children: React.ReactNode; variant?: 'primary' | 'white'; href?: string }) {
   const baseClasses = "inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]";
   const variantClasses = variant === 'primary' 
@@ -145,12 +189,40 @@ function Button({ children, variant = 'primary', href }: { children: React.React
   );
 }
 
+// Animated Section Header Component
+function SectionHeader({ label, children }: { label?: string; children: React.ReactNode }) {
+  return (
+    <motion.div 
+      className="text-center space-y-4 sm:space-y-6"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {label && (
+        <motion.p 
+          className="text-[#7cac8a] text-sm font-semibold tracking-[0.1em] uppercase"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          {label}
+        </motion.p>
+      )}
+      {children}
+    </motion.div>
+  );
+}
+
 // ==========================================
 // MAIN LANDING PAGE
 // ==========================================
 
 export default function LandingPage() {
   const heroRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
@@ -160,13 +232,18 @@ export default function LandingPage() {
   const heroTextY = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  // If user prefers reduced motion, disable animations
+  if (prefersReducedMotion) {
+    return <StaticLandingPage />;
+  }
+
   return (
     <div className="bg-white w-full overflow-x-hidden">
-      {/* Navigation - improved mobile padding */}
+      {/* Navigation - Fade in from top */}
       <motion.nav 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        initial="hidden"
+        animate="visible"
+        variants={fadeInDown}
         className="fixed top-4 sm:top-8 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-[1128px]"
       >
         <div className="bg-white/90 backdrop-blur-md rounded-full px-4 sm:px-6 lg:px-10 py-3 sm:py-4 flex items-center justify-between shadow-sm border border-[#cdcfcd]/30">
@@ -178,47 +255,68 @@ export default function LandingPage() {
         </div>
       </motion.nav>
 
-      {/* Hero Section - improved responsive padding */}
+      {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 xl:px-20">
         <div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left Content */}
+          
+          {/* Left Content - Staggered animations */}
           <motion.div 
             className="space-y-6 sm:space-y-8 lg:space-y-10 relative z-10"
-            style={{ y: heroTextY }}
+            style={{ y: heroTextY, opacity: heroOpacity }}
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
           >
-            <motion.div 
-              className="space-y-4 sm:space-y-6"
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-            >
+            {/* Main Headline - Each line animates separately */}
+            <div className="space-y-2">
               <motion.h1 
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] tracking-[-0.04em] font-normal"
-                variants={fadeInLeft}
               >
-                <span className="block">Read.</span>
-                <span className="block text-[#3c8350]">Understand.</span>
-                <span className="block">Write. Easier.</span>
+                <motion.span 
+                  className="block"
+                  variants={fadeInLeft}
+                  transition={{ delay: 0 }}
+                >
+                  Read.
+                </motion.span>
+                <motion.span 
+                  className="block text-[#3c8350]"
+                  variants={fadeInLeft}
+                  transition={{ delay: 0.1 }}
+                >
+                  Understand.
+                </motion.span>
+                <motion.span 
+                  className="block"
+                  variants={fadeInLeft}
+                  transition={{ delay: 0.2 }}
+                >
+                  Write. Easier.
+                </motion.span>
               </motion.h1>
-              <motion.p 
-                className="text-lg sm:text-xl lg:text-xl text-[#5d655f] leading-relaxed tracking-[-0.02em] max-w-md"
-                variants={fadeInLeft}
-              >
-                Lexi Assist is designed to make reading, studying, and writing significantly easier for students who learn differently.
-              </motion.p>
-            </motion.div>
+            </div>
+            
+            {/* Subtext - 0.2s delay */}
+            <motion.p 
+              className="text-lg sm:text-xl lg:text-xl text-[#5d655f] leading-relaxed tracking-[-0.02em] max-w-md"
+              variants={fadeInLeft}
+              transition={{ delay: 0.3 }}
+            >
+              Lexi Assist is designed to make reading, studying, and writing significantly easier for students who learn differently.
+            </motion.p>
+            
+            {/* Buttons - 0.3s delay */}
             <motion.div 
               className="flex flex-col sm:flex-row gap-3 sm:gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
+              variants={fadeInUp}
+              transition={{ delay: 0.4 }}
             >
               <Button variant="primary" href="/register">Get Started</Button>
               <Button variant="white" href="/login">Login</Button>
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Hero Image with Parallax */}
+          {/* Right Content - Image + Card */}
           <motion.div 
             className="relative h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-2xl overflow-hidden"
             style={{ y: heroImageY }}
@@ -226,22 +324,45 @@ export default function LandingPage() {
             initial="hidden"
             animate="visible"
           >
+            {/* Image */}
             <div className="absolute inset-0 bg-[#d9d9d9]">
               <img alt="Student reading" className="h-full w-full object-cover" src={imgHeroStudent} />
             </div>
             <div className="absolute inset-0 bg-gradient-to-r from-[#193722]/60 to-transparent" />
             
-            {/* Floating Card with hover animation */}
+            {/* Floating Card with continuous float + load animation */}
             <motion.div 
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[300px] lg:w-[320px]"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              whileHover={{ scale: 1.05, y: -10 }}
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={{ 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+              }}
+              transition={{ 
+                opacity: { delay: 0.5, duration: 0.6 },
+                y: { delay: 0.5, duration: 0.6 },
+                scale: { delay: 0.5, duration: 0.6 }
+              }}
             >
               <motion.div 
                 className="bg-white p-6 sm:p-8 shadow-2xl rounded-lg cursor-pointer"
-                whileHover={{ boxShadow: '0 25px 50px rgba(0,0,0,0.15)' }}
+                animate={{
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  y: {
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1.1
+                  }
+                }}
+                whileHover={{ 
+                  scale: 1.05, 
+                  y: -15,
+                  boxShadow: '0 30px 60px rgba(0,0,0,0.2)'
+                }}
               >
                 <div className="space-y-4">
                   <p className="font-semibold text-base lg:text-lg text-[#3c8350]">
@@ -257,31 +378,32 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Learning Shouldn't Be a Struggle - improved spacing */}
+      {/* Learning Shouldn't Be a Struggle */}
       <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-40">
         <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-12">
-          <motion.div 
-            className="space-y-4 sm:space-y-6"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]">
+          <SectionHeader>
+            <motion.h2 
+              className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]"
+              variants={fadeInUp}
+            >
               <span className="block">Learning Shouldn&apos;t Be</span>
               <span>a <em className="font-semibold not-italic text-[#3c8350]">Struggle.</em></span>
-            </h2>
-            <p className="text-lg sm:text-xl text-[#424843] leading-relaxed tracking-[-0.02em]">
+            </motion.h2>
+            <motion.p 
+              className="text-lg sm:text-xl text-[#424843] leading-relaxed tracking-[-0.02em]"
+              variants={staggerItem}
+            >
               We understand the biggest challenges for students who learn differently
-            </p>
-          </motion.div>
+            </motion.p>
+          </SectionHeader>
 
+          {/* Feature Cards - Staggered from bottom */}
           <motion.div 
             className="grid md:grid-cols-3 gap-0 border border-[#cdcfcd] rounded-2xl overflow-hidden"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, delay: 0.2 }}
           >
             {[
               { title: "Complex Text", desc: "Struggling to read complex, crowded text." },
@@ -291,6 +413,8 @@ export default function LandingPage() {
               <motion.div 
                 key={index}
                 className="bg-white p-6 sm:p-8 lg:p-10 min-h-[160px] flex items-center border-b md:border-b-0 md:border-r border-[#cdcfcd] last:border-0 cursor-pointer"
+                variants={staggerItem}
+                custom={index}
                 whileHover={{ 
                   backgroundColor: '#f8faf9',
                   scale: 1.02,
@@ -313,27 +437,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Built Around Your Learning Style - improved vertical rhythm */}
+      {/* Built Around Your Learning Style */}
       <section className="bg-white py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-40">
         <div className="max-w-[1127px] mx-auto space-y-16 sm:space-y-20 lg:space-y-24">
-          <motion.div 
-            className="text-center space-y-4 sm:space-y-6"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-[#7cac8a] text-sm font-semibold tracking-[0.1em] uppercase">
-              Our Approach
-            </p>
+          <SectionHeader label="Our Approach">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]">
               <span className="block">Built Around</span>
               <span><em className="font-semibold not-italic text-[#3c8350]">Your</em> Learning Style</span>
             </h2>
-          </motion.div>
+          </SectionHeader>
 
           <div className="space-y-16 sm:space-y-20 lg:space-y-28">
-            {/* Feature 01 */}
             <ParallaxFeature
               number="01"
               title="Simplified, readable text and structured explanations."
@@ -342,9 +456,14 @@ export default function LandingPage() {
               reverse={false}
             />
 
-            <div className="border-t border-[#cdcfcd]" />
+            <motion.div 
+              className="border-t border-[#cdcfcd]"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            />
 
-            {/* Feature 02 */}
             <ParallaxFeature
               number="02"
               title="Individual needs matter. You choose your perfect settings."
@@ -353,9 +472,14 @@ export default function LandingPage() {
               reverse={true}
             />
 
-            <div className="border-t border-[#cdcfcd]" />
+            <motion.div 
+              className="border-t border-[#cdcfcd]"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            />
 
-            {/* Feature 03 */}
             <ParallaxFeature
               number="03"
               title="Multisensory learning is key."
@@ -364,9 +488,14 @@ export default function LandingPage() {
               reverse={false}
             />
 
-            <div className="border-t border-[#cdcfcd]" />
+            <motion.div 
+              className="border-t border-[#cdcfcd]"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            />
 
-            {/* Feature 04 */}
             <ParallaxFeature
               number="04"
               title="Reduce writing stress, leverage your verbal strengths."
@@ -381,24 +510,22 @@ export default function LandingPage() {
       {/* Three Steps to Easier Learning */}
       <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-40">
         <div className="max-w-4xl mx-auto space-y-12 sm:space-y-16">
-          <motion.div 
-            className="text-center space-y-4 sm:space-y-6"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-[#7cac8a] text-sm font-semibold tracking-[0.1em] uppercase">
-              Process
-            </p>
+          <SectionHeader label="Process">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]">
               <span className="block">Three Steps to</span>
               <span><em className="font-semibold not-italic text-[#3c8350]">Easier</em> Learning</span>
             </h2>
-          </motion.div>
+          </SectionHeader>
 
           <div className="relative space-y-12 sm:space-y-16">
-            <div className="absolute left-[30px] sm:left-[62px] top-[60px] sm:top-[80px] bottom-[60px] sm:bottom-[80px] w-px bg-[#cdcfcd] hidden md:block" />
+            <motion.div 
+              className="absolute left-[30px] sm:left-[62px] top-[60px] sm:top-[80px] bottom-[60px] sm:bottom-[80px] w-px bg-[#cdcfcd] hidden md:block"
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.3 }}
+              style={{ originY: 0 }}
+            />
 
             {[
               { num: 1, title: "Upload Your Content", desc: "Drop in any .docx, PDF, or image file. LexiAssist instantly processes your document and prepares it for accessible reading." },
@@ -452,6 +579,61 @@ export default function LandingPage() {
           </p>
         </div>
       </motion.footer>
+    </div>
+  );
+}
+
+// Static version for reduced motion preference
+function StaticLandingPage() {
+  return (
+    <div className="bg-white w-full overflow-x-hidden">
+      <nav className="fixed top-4 sm:top-8 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-[1128px]">
+        <div className="bg-white/90 backdrop-blur-md rounded-full px-4 sm:px-6 lg:px-10 py-3 sm:py-4 flex items-center justify-between shadow-sm border border-[#cdcfcd]/30">
+          <Logo variant="black" />
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Link href="/login" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
+            <Link href="/register" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Get Started</Link>
+          </div>
+        </div>
+      </nav>
+
+      <section className="relative min-h-screen pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 xl:px-20">
+        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="space-y-6 sm:space-y-8 lg:space-y-10 relative z-10">
+            <div className="space-y-4 sm:space-y-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] tracking-[-0.04em] font-normal">
+                <span className="block">Read.</span>
+                <span className="block text-[#3c8350]">Understand.</span>
+                <span className="block">Write. Easier.</span>
+              </h1>
+              <p className="text-lg sm:text-xl lg:text-xl text-[#5d655f] leading-relaxed tracking-[-0.02em] max-w-md">
+                Lexi Assist is designed to make reading, studying, and writing significantly easier for students who learn differently.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Link href="/register" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Get Started</Link>
+              <Link href="/login" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
+            </div>
+          </div>
+
+          <div className="relative h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-2xl overflow-hidden">
+            <div className="absolute inset-0 bg-[#d9d9d9]">
+              <img alt="Student reading" className="h-full w-full object-cover" src={imgHeroStudent} />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#193722]/60 to-transparent" />
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[300px] lg:w-[320px]">
+              <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-lg">
+                <div className="space-y-4">
+                  <p className="font-semibold text-base lg:text-lg text-[#3c8350]">Simplified Reading Mode</p>
+                  <p className="text-sm lg:text-base text-[#5d655f] leading-relaxed">The mitochondria is often called the powerhouse of the cell.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Rest of static content... */}
     </div>
   );
 }
