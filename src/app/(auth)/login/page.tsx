@@ -7,13 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Logo from "@/components/auth/Logo";
 import Image from "next/image";
 
-// ============================================
-// DESIGN TOKENS
-// ============================================
-// Container: max-w-[1200px] with px-4 sm:px-6 lg:px-8
-// Spacing: 8px system (8, 16, 24, 32, 48, 64)
-
-// Social Login Button Component
+// Social Login Button Component - improved consistency
 function SocialLoginButton({ 
   provider, 
   label 
@@ -30,10 +24,11 @@ function SocialLoginButton({
       type="button"
       className="
         flex items-center justify-center gap-3 
-        h-12 px-6 
+        h-12 px-4 sm:px-6
         bg-white border border-[#D0D5DD] rounded-full 
-        hover:bg-gray-50 hover:border-[#377749]/30 
-        transition-all duration-200 shadow-sm
+        hover:bg-gray-50 hover:border-[#377749]/30 hover:shadow-sm
+        active:scale-[0.98]
+        transition-all duration-200
         text-sm font-medium text-[#374151]
       "
     >
@@ -45,7 +40,8 @@ function SocialLoginButton({
           className="object-contain"
         />
       </div>
-      <span className="whitespace-nowrap">{label}</span>
+      <span className="whitespace-nowrap hidden sm:inline">{label}</span>
+      <span className="whitespace-nowrap sm:hidden">{provider === 'google' ? 'Google' : 'LinkedIn'}</span>
     </button>
   );
 }
@@ -82,9 +78,8 @@ export default function LoginPage() {
           <Logo />
         </div>
         
-        {/* Image Asset Container - Place your image here */}
+        {/* Image Asset Container */}
         <div className="relative w-full max-w-[480px] aspect-square">
-          {/* Replace this div with your image asset */}
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center text-[#3C8350]/60">
               <div className="w-24 h-24 mx-auto mb-4 rounded-2xl bg-[#3C8350]/10 flex items-center justify-center">
@@ -100,17 +95,16 @@ export default function LoginPage() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-        {/* Container - Max width 480px centered */}
-        <div className="w-full max-w-[480px] space-y-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="w-full max-w-[480px] space-y-6 sm:space-y-8">
           {/* Mobile Logo */}
           <div className="lg:hidden flex justify-center">
             <Logo />
           </div>
 
           {/* Header */}
-          <div className="space-y-2">
-            <h1 className="text-3xl font-semibold tracking-[-0.02em] text-[#272A28]">
+          <div className="space-y-2 text-center lg:text-left">
+            <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-[#272A28]">
               Welcome Back
             </h1>
             <p className="text-[#555C56]">
@@ -119,7 +113,7 @@ export default function LoginPage() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email Input */}
             <div className="space-y-2">
               <label 
@@ -161,7 +155,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   className="
-                    w-full h-12 px-4 pr-11 rounded-full 
+                    w-full h-12 px-4 pr-12 rounded-full 
                     border border-[#D0D5DD] bg-white 
                     text-sm text-[#101928] placeholder:text-[#98A2B3] 
                     focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] 
@@ -172,7 +166,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#667185] hover:text-[#101928] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-[#667185] hover:text-[#101928] transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -181,7 +176,7 @@ export default function LoginPage() {
 
             {/* Error Message */}
             {error && (
-              <div className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-lg">
+              <div className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-xl">
                 {error}
               </div>
             )}
@@ -192,11 +187,11 @@ export default function LoginPage() {
               disabled={isLoading}
               className="
                 w-full h-12 
-                bg-[#377749] hover:bg-[#2d6340] 
+                bg-[#377749] hover:bg-[#2d6340] active:bg-[#265538]
                 text-white font-semibold rounded-full 
                 transition-all duration-200 
                 disabled:opacity-50 disabled:cursor-not-allowed 
-                flex items-center justify-center shadow-sm
+                flex items-center justify-center shadow-sm hover:shadow-md active:scale-[0.98]
               "
             >
               {isLoading ? (
@@ -218,7 +213,7 @@ export default function LoginPage() {
           </div>
 
           {/* Social Login Buttons */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <SocialLoginButton provider="google" label="Google" />
             <SocialLoginButton provider="linkedin" label="LinkedIn" />
           </div>

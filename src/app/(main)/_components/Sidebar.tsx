@@ -13,12 +13,11 @@ import {
   LogOut,
   MessageCircle,
   Layers,
-  HelpCircle,
   X,
   BookOpen,
   Upload,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
@@ -56,6 +55,23 @@ export default function Sidebar() {
   const [studyBuddyOpen, setStudyBuddyOpen] = useState(true);
   const { user, logout } = useAuthStore();
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const handleLogout = () => {
     logout();
     window.location.href = '/login';
@@ -75,31 +91,32 @@ export default function Sidebar() {
       <div className="fixed top-4 left-4 z-50 lg:hidden">
         <button
           type="button"
-          className="p-2 rounded-md bg-[#4A8B5C] shadow-md text-white"
+          className="p-2.5 rounded-xl bg-[#4A8B5C] shadow-md text-white hover:bg-[#3d7a4d] active:scale-95 transition-all duration-200"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile overlay */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
+      <div
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-200 ${
+          mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-[#4A8B5C] transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:h-screen ${
+        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-[#4A8B5C] transform transition-transform duration-200 ease-out lg:translate-x-0 lg:static lg:h-screen shadow-xl lg:shadow-none flex flex-col ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center gap-3 px-6 py-6">
-            <div className="w-10 h-10 flex items-center justify-center">
+          <div className="flex items-center gap-3 px-6 py-6 border-b border-white/10">
+            <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
               <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
                 <path
                   d="M20 5C20 5 12 10 12 18V28L20 35L28 28V18C28 10 20 5 20 5Z"
@@ -135,14 +152,14 @@ export default function Sidebar() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto">
+          <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
             {/* Dashboard */}
             <Link
               href="/dashboard"
               onClick={() => setMobileMenuOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive('/dashboard')
-                  ? 'bg-white text-[#4A8B5C]'
+                  ? 'bg-white text-[#4A8B5C] shadow-sm'
                   : 'text-white/90 hover:bg-white/10'
               }`}
             >
@@ -155,7 +172,7 @@ export default function Sidebar() {
 
             {/* Section Title */}
             <div className="px-4 py-2 text-xs font-medium text-white/60 uppercase tracking-wider">
-              Section Title
+              Learning Tools
             </div>
 
             {/* Main Nav Items */}
@@ -164,9 +181,9 @@ export default function Sidebar() {
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive(item.href)
-                    ? 'bg-white text-[#4A8B5C]'
+                    ? 'bg-white text-[#4A8B5C] shadow-sm'
                     : 'text-white/90 hover:bg-white/10'
                 }`}
               >
@@ -179,9 +196,9 @@ export default function Sidebar() {
             <div className="mt-2">
               <button
                 onClick={() => setStudyBuddyOpen(!studyBuddyOpen)}
-                className={`flex items-center justify-between w-full gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all ${
+                className={`flex items-center justify-between w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isStudyBuddyActive
-                    ? 'bg-white text-[#4A8B5C]'
+                    ? 'bg-white text-[#4A8B5C] shadow-sm'
                     : 'text-white/90 hover:bg-white/10'
                 }`}
               >
@@ -197,16 +214,20 @@ export default function Sidebar() {
               </button>
 
               {/* Submenu */}
-              {studyBuddyOpen && (
-                <div className="mt-1 ml-2 space-y-1">
+              <div
+                className={`overflow-hidden transition-all duration-200 ${
+                  studyBuddyOpen ? 'max-h-40 opacity-100 mt-1' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <div className="space-y-1 ml-2">
                   {studyBuddySubmenu.map((subItem) => (
                     <Link
                       key={subItem.name}
                       href={subItem.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl text-sm font-medium transition-all ml-6 ${
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ml-6 ${
                         isActive(subItem.href)
-                          ? 'bg-white text-[#4A8B5C]'
+                          ? 'bg-white text-[#4A8B5C] shadow-sm'
                           : 'text-white/80 hover:bg-white/10'
                       }`}
                     >
@@ -214,35 +235,33 @@ export default function Sidebar() {
                     </Link>
                   ))}
                 </div>
-              )}
+              </div>
             </div>
           </nav>
 
           {/* Bottom section - User Profile */}
-          <div className="px-4 py-4 mt-auto">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-10 w-10 border-2 border-white/30">
-                  <AvatarImage
-                    src={user?.avatar}
-                    alt={user?.name || 'User'}
-                  />
-                  <AvatarFallback className="bg-white/20 text-white">
-                    {user?.name?.charAt(0) || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-white">
-                    {user?.name || 'Alison Eyo'}
-                  </span>
-                  <span className="text-xs text-white/70">
-                    {user?.email || 'ails@lexiassist'}
-                  </span>
-                </div>
+          <div className="px-4 py-4 mt-auto border-t border-white/10">
+            <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors">
+              <Avatar className="h-10 w-10 border-2 border-white/30 flex-shrink-0">
+                <AvatarImage
+                  src={user?.avatar}
+                  alt={user?.name || 'User'}
+                />
+                <AvatarFallback className="bg-white/20 text-white">
+                  {user?.name?.charAt(0) || 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <span className="block text-sm font-medium text-white truncate">
+                  {user?.name || 'Alison Eyo'}
+                </span>
+                <span className="block text-xs text-white/70 truncate">
+                  {user?.email || 'ails@lexiassist'}
+                </span>
               </div>
               <button
                 onClick={handleLogout}
-                className="p-2 rounded-lg text-white/80 hover:bg-white/10 transition-colors"
+                className="p-2 rounded-lg text-white/80 hover:bg-white/10 transition-colors flex-shrink-0"
                 title="Logout"
               >
                 <LogOut size={18} />
