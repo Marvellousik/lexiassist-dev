@@ -22,15 +22,7 @@ function SocialLoginButton({
   return (
     <button
       type="button"
-      className="
-        flex items-center justify-center gap-3 
-        h-12 px-4 sm:px-6
-        bg-white border border-[#D0D5DD] rounded-full 
-        hover:bg-gray-50 hover:border-[#377749]/30 hover:shadow-sm
-        active:scale-[0.98]
-        transition-all duration-200
-        text-sm font-medium text-[#374151]
-      "
+      className="flex items-center justify-center gap-3 h-12 px-4 sm:px-6 bg-white border border-[#D0D5DD] rounded-full hover:bg-gray-50 hover:border-[#377749]/30 hover:shadow-sm active:scale-[0.98] transition-all duration-200 text-sm font-medium text-[#374151]"
     >
       <div className="relative w-5 h-5 flex-shrink-0">
         <Image 
