@@ -16,7 +16,6 @@ import {
   BookOpen,
   Trash2,
   Edit3,
-  MoreHorizontal,
   Check,
   X,
 } from 'lucide-react';
@@ -79,7 +78,6 @@ export default function FlashcardsPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newCardFront, setNewCardFront] = useState('');
   const [newCardBack, setNewCardBack] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const currentCard = cards[currentIndex];
 
@@ -134,29 +132,6 @@ export default function FlashcardsPage() {
     toast.success('Card added successfully');
   };
 
-  const handleGenerateAI = () => {
-    setIsGenerating(true);
-    setTimeout(() => {
-      const aiCards: Flashcard[] = [
-        {
-          id: Date.now().toString(),
-          front: 'What is artificial intelligence?',
-          back: 'The simulation of human intelligence in machines that are programmed to think and learn like humans.',
-          category: 'Technology',
-        },
-        {
-          id: (Date.now() + 1).toString(),
-          front: 'Define machine learning',
-          back: 'A subset of AI that enables systems to learn and improve from experience without being explicitly programmed.',
-          category: 'Technology',
-        },
-      ];
-      setCards((prev) => [...prev, ...aiCards]);
-      setIsGenerating(false);
-      toast.success('AI-generated cards added');
-    }, 1500);
-  };
-
   const handleSaveSet = () => {
     const newSet: StudySet = {
       id: Date.now().toString(),
@@ -170,12 +145,12 @@ export default function FlashcardsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Flashcards</h1>
-          <p className="mt-1 text-slate-600">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Flashcards</h1>
+          <p className="mt-1 text-sm text-slate-600">
             Study with AI-generated flashcards
           </p>
         </div>
@@ -223,7 +198,7 @@ export default function FlashcardsPage() {
       </div>
 
       {/* Flashcard */}
-      <div className="relative h-80 perspective-1000">
+      <div className="relative h-56 sm:h-72 lg:h-80 perspective-1000">
         <div
           onClick={handleFlip}
           className={`relative w-full h-full cursor-pointer transition-transform duration-500 transform-style-3d ${
@@ -238,14 +213,14 @@ export default function FlashcardsPage() {
             }`}
             style={{ backfaceVisibility: 'hidden' }}
           >
-            <CardContent className="h-full flex flex-col items-center justify-center p-8 text-center">
-              <span className="text-xs font-medium text-[#4A8B5C] uppercase tracking-wider mb-4">
+            <CardContent className="h-full flex flex-col items-center justify-center p-6 sm:p-8 text-center">
+              <span className="text-xs font-medium text-[#4A8B5C] uppercase tracking-wider mb-3 sm:mb-4">
                 {currentCard?.category || 'General'}
               </span>
-              <h3 className="text-xl font-semibold text-slate-900">
+              <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
                 {currentCard?.front}
               </h3>
-              <p className="mt-4 text-sm text-slate-400">
+              <p className="mt-3 sm:mt-4 text-sm text-slate-400">
                 Click to flip
               </p>
             </CardContent>
@@ -261,11 +236,11 @@ export default function FlashcardsPage() {
               transform: 'rotateY(180deg)',
             }}
           >
-            <CardContent className="h-full flex flex-col items-center justify-center p-8 text-center">
-              <h3 className="text-lg leading-relaxed">
+            <CardContent className="h-full flex flex-col items-center justify-center p-6 sm:p-8 text-center">
+              <h3 className="text-base sm:text-lg leading-relaxed">
                 {currentCard?.back}
               </h3>
-              <p className="mt-4 text-sm text-white/70">
+              <p className="mt-3 sm:mt-4 text-sm text-white/70">
                 Click to flip back
               </p>
             </CardContent>
@@ -274,17 +249,19 @@ export default function FlashcardsPage() {
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-2 sm:gap-4">
         <Button
           variant="outline"
           onClick={handlePrevious}
           leftIcon={<ChevronLeft size={18} />}
+          className="text-sm"
         >
-          Previous
+          <span className="hidden sm:inline">Previous</span>
         </Button>
         <Button
           onClick={handleFlip}
           leftIcon={<FlipHorizontal size={18} />}
+          className="text-sm"
         >
           Flip Card
         </Button>
@@ -292,43 +269,44 @@ export default function FlashcardsPage() {
           variant="outline"
           onClick={handleNext}
           rightIcon={<ChevronRight size={18} />}
+          className="text-sm"
         >
-          Next
+          <span className="hidden sm:inline">Next</span>
         </Button>
       </div>
 
       {/* Actions */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
         <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
+          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 flex-shrink-0">
               <Sparkles className="h-5 w-5 text-blue-600" />
             </div>
-            <div>
-              <p className="font-medium text-slate-900">AI Generate</p>
-              <p className="text-sm text-slate-500">Create cards automatically</p>
+            <div className="min-w-0">
+              <p className="font-medium text-slate-900 text-sm">AI Generate</p>
+              <p className="text-xs sm:text-sm text-slate-500">Create cards automatically</p>
             </div>
           </CardContent>
         </Card>
         <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50">
+          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 flex-shrink-0">
               <Shuffle className="h-5 w-5 text-purple-600" />
             </div>
-            <div>
-              <p className="font-medium text-slate-900">Shuffle Mode</p>
-              <p className="text-sm text-slate-500">Randomize card order</p>
+            <div className="min-w-0">
+              <p className="font-medium text-slate-900 text-sm">Shuffle Mode</p>
+              <p className="text-xs sm:text-sm text-slate-500">Randomize card order</p>
             </div>
           </CardContent>
         </Card>
         <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
+          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 flex-shrink-0">
               <Layers className="h-5 w-5 text-green-600" />
             </div>
-            <div>
-              <p className="font-medium text-slate-900">Study Sets</p>
-              <p className="text-sm text-slate-500">Organize your cards</p>
+            <div className="min-w-0">
+              <p className="font-medium text-slate-900 text-sm">Study Sets</p>
+              <p className="text-xs sm:text-sm text-slate-500">Organize your cards</p>
             </div>
           </CardContent>
         </Card>
@@ -338,7 +316,7 @@ export default function FlashcardsPage() {
       {studySets.length > 0 && (
         <Card>
           <CardHeader title="Your Study Sets" />
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="grid gap-3 sm:grid-cols-2">
               {studySets.map((set) => (
                 <div
@@ -346,11 +324,11 @@ export default function FlashcardsPage() {
                   className="p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
                 >
                   <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="font-medium text-slate-900">{set.title}</h4>
+                    <div className="min-w-0">
+                      <h4 className="font-medium text-slate-900 truncate">{set.title}</h4>
                       <p className="text-sm text-slate-500">{set.description}</p>
                     </div>
-                    <BookOpen size={18} className="text-slate-400" />
+                    <BookOpen size={18} className="text-slate-400 flex-shrink-0 ml-2" />
                   </div>
                   <p className="text-xs text-slate-400 mt-2">
                     Created {new Date(set.createdAt).toLocaleDateString()}
@@ -365,7 +343,7 @@ export default function FlashcardsPage() {
       {/* Add Card Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <Card className="w-full max-w-md">
+          <Card className="w-full max-w-md mx-4">
             <CardHeader
               title="Create New Card"
               action={

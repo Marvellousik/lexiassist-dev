@@ -12,10 +12,6 @@ import {
   Clock,
   BookOpen,
   Paperclip,
-  MoreVertical,
-  Copy,
-  Check,
-  MessageSquare,
   Brain,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -129,12 +125,12 @@ export default function ChatAssistantPage() {
   };
 
   return (
-    <div className="space-y-4 max-w-5xl mx-auto h-[calc(100vh-8rem)]">
+    <div className="space-y-4 max-w-5xl mx-auto h-[calc(100vh-6rem)] flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 flex-shrink-0">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Chat Assistant</h1>
-          <p className="mt-1 text-slate-600">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Chat Assistant</h1>
+          <p className="mt-1 text-sm text-slate-600">
             Ask questions and get AI-powered academic help
           </p>
         </div>
@@ -152,22 +148,21 @@ export default function ChatAssistantPage() {
             variant="outline"
             size="sm"
             onClick={handleNewChat}
-            leftIcon={<MessageSquare size={16} />}
           >
             New Chat
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-4 h-full">
-        {/* Sidebar - Recent Conversations */}
+      <div className="grid gap-4 lg:grid-cols-4 flex-1 min-h-0">
+        {/* Sidebar - Recent Conversations - Hidden on mobile */}
         <Card className="lg:col-span-1 hidden lg:flex flex-col">
           <CardContent className="p-4 flex flex-col h-full">
             <div className="flex items-center gap-2 mb-4">
               <Clock size={16} className="text-slate-500" />
               <span className="text-sm font-medium text-slate-700">Recent</span>
             </div>
-            <div className="flex-1 overflow-y-auto space-y-2">
+            <div className="flex-1 overflow-y-auto space-y-2 min-h-0">
               {conversations.length === 0 ? (
                 <p className="text-sm text-slate-400 text-center py-4">
                   No recent conversations
@@ -188,7 +183,7 @@ export default function ChatAssistantPage() {
                 ))
               )}
             </div>
-            <div className="pt-4 border-t border-slate-100 mt-4">
+            <div className="pt-4 border-t border-slate-100 mt-4 flex-shrink-0">
               <div className="flex items-center gap-2 text-sm text-slate-500">
                 <BookOpen size={16} />
                 <span>Course materials integrated</span>
@@ -198,23 +193,23 @@ export default function ChatAssistantPage() {
         </Card>
 
         {/* Main Chat Area */}
-        <Card className="lg:col-span-3 flex flex-col h-full">
+        <Card className="lg:col-span-3 flex flex-col h-full overflow-hidden">
           <CardContent className="p-0 flex flex-col h-full">
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 min-h-0">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-[#4A8B5C]/10 flex items-center justify-center mb-4">
                     <Brain className="h-8 w-8 text-[#4A8B5C]" />
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2 text-center">
                     How can I help you today?
                   </h3>
-                  <p className="text-sm text-slate-500 mb-6 text-center max-w-md">
+                  <p className="text-sm text-slate-500 mb-6 text-center max-w-md px-4">
                     Ask me anything about your studies. I'm here to help explain concepts,
                     solve problems, and guide your learning.
                   </p>
-                  <div className="flex flex-wrap gap-2 justify-center max-w-lg">
+                  <div className="flex flex-wrap gap-2 justify-center max-w-lg px-4">
                     {suggestedPrompts.map((prompt) => (
                       <button
                         key={prompt}
@@ -246,7 +241,7 @@ export default function ChatAssistantPage() {
                       )}
                     </Avatar>
                     <div
-                      className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                      className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-4 py-3 ${
                         message.role === 'user'
                           ? 'bg-[#4A8B5C] text-white'
                           : 'bg-slate-100 text-slate-700'
@@ -295,10 +290,10 @@ export default function ChatAssistantPage() {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-slate-100 p-4">
+            <div className="border-t border-slate-100 p-3 sm:p-4 flex-shrink-0">
               <div className="flex items-end gap-2">
                 <button
-                  className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                  className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors flex-shrink-0"
                   title="Attach file (coming soon)"
                 >
                   <Paperclip size={20} />

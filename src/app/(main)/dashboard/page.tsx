@@ -15,7 +15,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-// Tool Card Component - improved consistency
+// Tool Card Component
 interface ToolCardProps {
   title: string;
   description: string;
@@ -70,7 +70,7 @@ function ToolCard({ title, description, bgColor, icon, href }: ToolCardProps) {
   );
 }
 
-// File Item Component - improved hover state
+// File Item Component
 interface FileItemProps {
   title: string;
 }
@@ -99,7 +99,7 @@ function FileItem({ title }: FileItemProps) {
   );
 }
 
-// Main Dashboard Page - improved spacing and layout
+// Main Dashboard Page
 export default function DashboardPage() {
   const { user } = useAuthStore();
 
@@ -150,7 +150,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 sm:space-y-8 max-w-6xl">
-      {/* Header - improved spacing and wrapping */}
+      {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="font-semibold text-[#272a28] text-2xl sm:text-3xl leading-tight mb-1">
@@ -181,7 +181,7 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Stats Row - improved cards */}
+      {/* Stats Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: 'Study Streak', value: '7 days', icon: Clock, color: 'text-orange-500', bg: 'bg-orange-50' },

@@ -8,13 +8,9 @@ import {
   FileText,
   Edit3,
   Menu,
-  ChevronUp,
   ChevronDown,
   LogOut,
-  MessageCircle,
-  Layers,
   X,
-  BookOpen,
   Upload,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -87,11 +83,11 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile menu button */}
-      <div className="fixed top-4 left-4 z-50 lg:hidden">
+      {/* Mobile Menu Button - Fixed top left */}
+      <div className="fixed top-4 left-4 z-[60] lg:hidden">
         <button
           type="button"
-          className="p-2.5 rounded-xl bg-[#4A8B5C] shadow-md text-white hover:bg-[#3d7a4d] active:scale-95 transition-all duration-200"
+          className="p-3 rounded-xl bg-[#4A8B5C] shadow-lg text-white hover:bg-[#3d7a4d] active:scale-95 transition-all duration-200"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
@@ -99,23 +95,24 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* Mobile overlay */}
+      {/* Mobile Overlay Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-200 ${
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[45] lg:hidden transition-opacity duration-300 ${
           mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setMobileMenuOpen(false)}
       />
 
-      {/* Sidebar */}
+      {/* Sidebar Container */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-[#4A8B5C] transform transition-transform duration-200 ease-out lg:translate-x-0 lg:static lg:h-screen shadow-xl lg:shadow-none flex flex-col ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 h-screen w-[280px] xl:w-[320px] bg-[#4A8B5C] z-[50] shadow-2xl transform transition-transform duration-300 ease-out
+          lg:translate-x-0
+          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
       >
         <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="flex items-center gap-3 px-6 py-6 border-b border-white/10">
+          {/* Logo Section */}
+          <div className="flex items-center gap-3 px-5 lg:px-6 py-5 lg:py-6 border-b border-white/10 flex-shrink-0">
             <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
               <svg viewBox="0 0 40 40" fill="none" className="w-10 h-10">
                 <path
@@ -148,11 +145,11 @@ export default function Sidebar() {
                 />
               </svg>
             </div>
-            <span className="text-xl font-semibold text-white">LexiAssist</span>
+            <span className="text-xl font-semibold text-white truncate">LexiAssist</span>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {/* Navigation - Scrollable */}
+          <nav className="flex-1 px-3 lg:px-4 py-4 space-y-1 overflow-y-auto min-h-0">
             {/* Dashboard */}
             <Link
               href="/dashboard"
@@ -164,7 +161,7 @@ export default function Sidebar() {
               }`}
             >
               <Home size={20} />
-              Dashboard
+              <span className="truncate">Dashboard</span>
             </Link>
 
             {/* Divider */}
@@ -188,7 +185,7 @@ export default function Sidebar() {
                 }`}
               >
                 <item.icon size={20} />
-                {item.name}
+                <span className="truncate">{item.name}</span>
               </Link>
             ))}
 
@@ -202,21 +199,21 @@ export default function Sidebar() {
                     : 'text-white/90 hover:bg-white/10'
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   <Menu size={20} />
-                  StudyBuddy
+                  <span className="truncate">StudyBuddy</span>
                 </div>
-                {studyBuddyOpen ? (
-                  <ChevronUp size={16} />
-                ) : (
+                <span 
+                  className={`flex-shrink-0 transition-transform duration-200 ${studyBuddyOpen ? 'rotate-180' : ''}`}
+                >
                   <ChevronDown size={16} />
-                )}
+                </span>
               </button>
 
               {/* Submenu */}
               <div
                 className={`overflow-hidden transition-all duration-200 ${
-                  studyBuddyOpen ? 'max-h-40 opacity-100 mt-1' : 'max-h-0 opacity-0'
+                  studyBuddyOpen ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'
                 }`}
               >
                 <div className="space-y-1 ml-2">
@@ -225,13 +222,13 @@ export default function Sidebar() {
                       key={subItem.name}
                       href={subItem.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ml-6 ${
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ml-4 lg:ml-6 ${
                         isActive(subItem.href)
                           ? 'bg-white text-[#4A8B5C] shadow-sm'
                           : 'text-white/80 hover:bg-white/10'
                       }`}
                     >
-                      {subItem.name}
+                      <span className="truncate">{subItem.name}</span>
                     </Link>
                   ))}
                 </div>
@@ -240,7 +237,7 @@ export default function Sidebar() {
           </nav>
 
           {/* Bottom section - User Profile */}
-          <div className="px-4 py-4 mt-auto border-t border-white/10">
+          <div className="px-3 lg:px-4 py-4 border-t border-white/10 flex-shrink-0">
             <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors">
               <Avatar className="h-10 w-10 border-2 border-white/30 flex-shrink-0">
                 <AvatarImage

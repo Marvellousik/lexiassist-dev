@@ -17,8 +17,6 @@ import {
   FileText,
   RotateCcw,
   Type,
-  BookOpen,
-  Languages,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -164,12 +162,12 @@ export default function WritingAssistantPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Writing Assistant</h1>
-          <p className="mt-1 text-slate-600">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Writing Assistant</h1>
+          <p className="mt-1 text-sm text-slate-600">
             AI-powered writing enhancement with voice input
           </p>
         </div>
@@ -184,12 +182,12 @@ export default function WritingAssistantPage() {
 
       {/* Mode Selection */}
       <Card className="bg-slate-50">
-        <CardContent className="p-4">
+        <CardContent className="p-3 sm:p-4">
           <div className="flex items-center gap-2 mb-3">
             <Wand2 size={18} className="text-slate-500" />
             <span className="text-sm font-medium text-slate-700">Rewrite Mode:</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
             {rewriteModes.map((mode) => (
               <button
                 key={mode.id}
@@ -210,7 +208,7 @@ export default function WritingAssistantPage() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         {/* Input Section */}
         <div className="space-y-4">
           <Card className="h-full">
@@ -229,7 +227,7 @@ export default function WritingAssistantPage() {
                 </Button>
               }
             />
-            <CardContent className="p-4">
+            <CardContent className="p-3 sm:p-4">
               {isRecording && (
                 <div className="mb-3 p-3 bg-red-50 rounded-lg flex items-center gap-2">
                   <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
@@ -240,7 +238,7 @@ export default function WritingAssistantPage() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Start typing or click 'Voice Input' to speak..."
-                className="w-full h-80 p-4 text-sm text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none"
+                className="w-full h-64 sm:h-80 p-3 sm:p-4 text-sm text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none"
               />
               <div className="flex items-center justify-between mt-3">
                 <span className="text-xs text-slate-500">
@@ -283,9 +281,9 @@ export default function WritingAssistantPage() {
                 )
               }
             />
-            <CardContent className="p-4">
+            <CardContent className="p-3 sm:p-4">
               {rewrittenText ? (
-                <div className="h-80 overflow-y-auto">
+                <div className="h-64 sm:h-80 overflow-y-auto">
                   <div className="prose prose-sm max-w-none">
                     <div className="whitespace-pre-wrap text-sm text-slate-700 leading-relaxed">
                       {rewrittenText}
@@ -293,7 +291,7 @@ export default function WritingAssistantPage() {
                   </div>
                 </div>
               ) : (
-                <div className="h-80 flex flex-col items-center justify-center text-center">
+                <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center">
                   <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
                     <Sparkles className="h-8 w-8 text-slate-400" />
                   </div>
@@ -321,37 +319,37 @@ export default function WritingAssistantPage() {
       </div>
 
       {/* Features */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
         <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
+          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 flex-shrink-0">
               <Mic className="h-5 w-5 text-blue-600" />
             </div>
-            <div>
-              <p className="font-medium text-slate-900">Voice to Text</p>
-              <p className="text-sm text-slate-500">Speak and transcribe</p>
+            <div className="min-w-0">
+              <p className="font-medium text-slate-900 text-sm">Voice to Text</p>
+              <p className="text-xs sm:text-sm text-slate-500">Speak and transcribe</p>
             </div>
           </CardContent>
         </Card>
         <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50">
+          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 flex-shrink-0">
               <RotateCcw className="h-5 w-5 text-purple-600" />
             </div>
-            <div>
-              <p className="font-medium text-slate-900">Multiple Modes</p>
-              <p className="text-sm text-slate-500">4 rewriting styles</p>
+            <div className="min-w-0">
+              <p className="font-medium text-slate-900 text-sm">Multiple Modes</p>
+              <p className="text-xs sm:text-sm text-slate-500">4 rewriting styles</p>
             </div>
           </CardContent>
         </Card>
         <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
+          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 flex-shrink-0">
               <Download className="h-5 w-5 text-green-600" />
             </div>
-            <div>
-              <p className="font-medium text-slate-900">Export</p>
-              <p className="text-sm text-slate-500">PDF/DOCX coming soon</p>
+            <div className="min-w-0">
+              <p className="font-medium text-slate-900 text-sm">Export</p>
+              <p className="text-xs sm:text-sm text-slate-500">PDF/DOCX coming soon</p>
             </div>
           </CardContent>
         </Card>
@@ -361,19 +359,19 @@ export default function WritingAssistantPage() {
       {history.length > 0 && (
         <Card>
           <CardHeader title="Recent Enhancements" />
-          <CardContent className="p-4">
-            <div className="space-y-3">
+          <CardContent className="p-3 sm:p-4">
+            <div className="space-y-2 sm:space-y-3">
               {history.slice(0, 5).map((item) => (
                 <div
                   key={item.id}
                   className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4A8B5C]/10">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4A8B5C]/10 flex-shrink-0">
                       <Edit3 size={14} className="text-[#4A8B5C]" />
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-slate-700 line-clamp-1">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-slate-700 truncate">
                         {item.original}
                       </p>
                       <p className="text-xs text-slate-500 capitalize">
