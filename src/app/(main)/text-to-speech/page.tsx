@@ -30,7 +30,6 @@ export default function TextToSpeechPage() {
   const [showSettings, setShowSettings] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  // Load history from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('tts-history');
     if (saved) {
@@ -38,7 +37,6 @@ export default function TextToSpeechPage() {
     }
   }, []);
 
-  // Save history to localStorage
   useEffect(() => {
     localStorage.setItem('tts-history', JSON.stringify(history));
   }, [history]);
@@ -60,7 +58,6 @@ export default function TextToSpeechPage() {
     utterance.pitch = 1;
     utterance.volume = 1;
 
-    // Try to set selected voice
     const voices = window.speechSynthesis.getVoices();
     const preferredVoice = voices.find((v) => v.name.includes('Google') || v.name.includes('Natural'));
     if (preferredVoice) {
@@ -77,7 +74,6 @@ export default function TextToSpeechPage() {
     utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
 
-    // Add to history
     const newItem: TTSHistoryItem = {
       id: Date.now().toString(),
       text: text.slice(0, 100) + (text.length > 100 ? '...' : ''),
@@ -99,8 +95,7 @@ export default function TextToSpeechPage() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto">
-      {/* Header */}
+    <div className="space-y-4 max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Text to Speech</h1>
@@ -118,7 +113,6 @@ export default function TextToSpeechPage() {
         </Button>
       </div>
 
-      {/* Settings Panel */}
       {showSettings && (
         <Card className="bg-slate-50">
           <CardContent className="p-3 sm:p-4">
@@ -133,7 +127,7 @@ export default function TextToSpeechPage() {
                       onClick={() => setPlaybackRate(rate)}
                       className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                         playbackRate === rate
-                          ? 'bg-[#4A8B5C] text-white'
+                          ? 'bg-[#3c8350] text-white'
                           : 'bg-white text-slate-600 hover:bg-slate-100'
                       }`}
                     >
@@ -147,7 +141,6 @@ export default function TextToSpeechPage() {
         </Card>
       )}
 
-      {/* Main Input Area */}
       <Card className="border-2 border-dashed border-slate-200">
         <CardContent className="p-4 sm:p-6">
           <div className="flex items-center gap-2 mb-3 sm:mb-4 text-slate-500">
@@ -158,7 +151,7 @@ export default function TextToSpeechPage() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Type or paste your text here to convert it to speech..."
-            className="w-full h-48 sm:h-64 p-3 sm:p-4 text-sm sm:text-base text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none"
+            className="w-full h-48 sm:h-64 p-3 sm:p-4 text-sm sm:text-base text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#3c8350] focus:ring-2 focus:ring-[#3c8350]/20 focus:outline-none resize-none"
           />
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-3 sm:mt-4">
             <span className="text-xs sm:text-sm text-slate-500">
@@ -186,7 +179,6 @@ export default function TextToSpeechPage() {
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
@@ -223,7 +215,6 @@ export default function TextToSpeechPage() {
         </Card>
       </div>
 
-      {/* History Section */}
       {history.length > 0 && (
         <Card>
           <CardContent className="p-4 sm:p-6">

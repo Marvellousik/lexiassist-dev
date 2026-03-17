@@ -87,7 +87,7 @@ export default function Sidebar() {
       <div className="fixed top-4 left-4 z-[60] lg:hidden">
         <button
           type="button"
-          className="p-3 rounded-xl bg-[#4A8B5C] shadow-lg text-white hover:bg-[#3d7a4d] active:scale-95 transition-all duration-200"
+          className="p-3 rounded-xl bg-[#3c8350] shadow-lg text-white hover:bg-[#377749] active:scale-95 transition-all duration-200"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
@@ -105,7 +105,7 @@ export default function Sidebar() {
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 left-0 h-screen w-[280px] xl:w-[320px] bg-[#4A8B5C] z-[50] shadow-2xl transform transition-transform duration-300 ease-out
+        className={`fixed top-0 left-0 h-screen w-[280px] xl:w-[320px] bg-[#3c8350] z-[50] shadow-2xl transform transition-transform duration-300 ease-out
           lg:translate-x-0
           ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
@@ -122,7 +122,7 @@ export default function Sidebar() {
                 />
                 <path
                   d="M20 8C20 8 14 12 14 18V26L20 31L26 26V18C26 12 20 8 20 8Z"
-                  fill="#4A8B5C"
+                  fill="#3c8350"
                 />
                 <circle cx="20" cy="18" r="3" fill="white" />
                 <path
@@ -156,7 +156,7 @@ export default function Sidebar() {
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive('/dashboard')
-                  ? 'bg-white text-[#4A8B5C] shadow-sm'
+                  ? 'bg-white text-[#3c8350] shadow-sm'
                   : 'text-white/90 hover:bg-white/10'
               }`}
             >
@@ -180,7 +180,7 @@ export default function Sidebar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive(item.href)
-                    ? 'bg-white text-[#4A8B5C] shadow-sm'
+                    ? 'bg-white text-[#3c8350] shadow-sm'
                     : 'text-white/90 hover:bg-white/10'
                 }`}
               >
@@ -195,7 +195,7 @@ export default function Sidebar() {
                 onClick={() => setStudyBuddyOpen(!studyBuddyOpen)}
                 className={`flex items-center justify-between w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isStudyBuddyActive
-                    ? 'bg-white text-[#4A8B5C] shadow-sm'
+                    ? 'bg-white text-[#3c8350] shadow-sm'
                     : 'text-white/90 hover:bg-white/10'
                 }`}
               >
@@ -224,7 +224,7 @@ export default function Sidebar() {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ml-4 lg:ml-6 ${
                         isActive(subItem.href)
-                          ? 'bg-white text-[#4A8B5C] shadow-sm'
+                          ? 'bg-white text-[#3c8350] shadow-sm'
                           : 'text-white/80 hover:bg-white/10'
                       }`}
                     >

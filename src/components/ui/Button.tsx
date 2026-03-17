@@ -9,12 +9,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:ring-indigo-500",
+        default: "bg-[#3c8350] text-white hover:bg-[#377749] focus-visible:ring-[#3c8350]",
         destructive: "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500",
-        outline: "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus-visible:ring-slate-500",
-        secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-500",
-        ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
-        link: "text-indigo-600 underline-offset-4 hover:underline",
+        outline: "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus-visible:ring-[#3c8350]",
+        secondary: "bg-[#ecf3ee] text-[#3c8350] hover:bg-[#c3d9c9] focus-visible:ring-[#3c8350]",
+        ghost: "text-slate-700 hover:bg-[#ecf3ee] hover:text-[#3c8350]",
+        link: "text-[#3c8350] underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -27,7 +27,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps

@@ -91,7 +91,7 @@ function Logo({ variant = 'black' }: { variant?: 'black' | 'white' }) {
 function Button({ children, variant = 'primary', href }: { children: React.ReactNode; variant?: 'primary' | 'white'; href?: string }) {
   const baseClasses = "inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]";
   const variantClasses = variant === 'primary' 
-    ? "bg-[#377749] text-white hover:bg-[#2d6340] shadow-sm hover:shadow-md" 
+    ? "bg-[#377749] text-white hover:bg-[#2b5d39] shadow-sm hover:shadow-md" 
     : "bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]";
   
   if (href) {
@@ -128,41 +128,38 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section - improved responsive padding */}
-      <section className="relative min-h-screen pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 xl:px-40">
-        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <section className="relative min-h-screen pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 xl:px-20">
+        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left Content */}
-          <div className="space-y-6 sm:space-y-8 lg:space-y-12 max-w-[526px]">
+          <div className="space-y-6 sm:space-y-8 lg:space-y-10 relative z-10">
             <div className="space-y-4 sm:space-y-6">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[1.05] tracking-[-0.04em] font-normal">
-                <span className="block">Read. </span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] tracking-[-0.04em] font-normal">
+                <span className="block">Read.</span>
                 <span className="block text-[#3c8350]">Understand.</span>
-                <span className="block"> Write. Easier.</span>
+                <span className="block">Write. Easier.</span>
               </h1>
-              <p className="text-lg sm:text-xl lg:text-2xl text-[#5d655f] leading-relaxed tracking-[-0.02em] max-w-lg">
+              <p className="text-lg sm:text-xl lg:text-xl text-[#5d655f] leading-relaxed tracking-[-0.02em] max-w-md">
                 Lexi Assist is designed to make reading, studying, and writing significantly easier for students who learn differently.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button variant="primary" href="/register">Get Started</Button>
-              <Button variant="white" href="/login">Get Started</Button>
+              <Button variant="white" href="/login">Login</Button>
             </div>
           </div>
 
           {/* Right Content - Hero Image */}
-          <div className="relative h-[400px] sm:h-[500px] md:h-[700px] lg:h-[918px] lg:-mr-20 xl:-mr-40">
-            <div className="absolute h-[500px] sm:h-[600px] md:h-[800px] lg:h-[1132px] left-0 lg:left-[-50px] top-0 lg:top-[-28px] w-full lg:w-[900px]">
-              <div className="absolute inset-0 bg-[#d9d9d9]">
-                <img alt="Student reading" className="absolute h-full w-full object-cover" src={imgHeroStudent} />
-              </div>
+          <div className="relative h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-2xl overflow-hidden">
+            <div className="absolute inset-0 bg-[#d9d9d9]">
+              <img alt="Student reading" className="h-full w-full object-cover" src={imgHeroStudent} />
             </div>
-            <div className="absolute bg-[#193722] h-full lg:h-[918px] left-0 lg:left-[2px] opacity-69 top-0 w-full lg:w-[722px]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#193722]/60 to-transparent" />
             
-            {/* Floating Card - improved responsive sizing */}
-            <div className="absolute w-[280px] sm:w-[300px] lg:w-[334px] left-1/2 lg:left-[179px] top-1/2 lg:top-[275px] -translate-x-1/2 lg:translate-x-0 -translate-y-1/2 lg:translate-y-0">
-              <div className="absolute border-2 border-white left-0 size-[250px] sm:size-[280px] lg:size-[296px] top-0" />
-              <div className="absolute bg-white flex flex-col items-start left-4 sm:left-6 lg:left-[36px] pb-8 sm:pb-12 lg:pb-16 pl-6 sm:pl-8 lg:pl-[54px] pr-5 sm:pr-6 lg:pr-[38px] pt-6 sm:pt-8 lg:pt-[39px] size-[260px] sm:size-[290px] lg:size-[298px] top-4 sm:top-5 lg:top-[35px] shadow-xl">
-                <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-                  <p className="font-semibold text-base lg:text-lg text-[#5d655f]">
+            {/* Floating Card */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[300px] lg:w-[320px]">
+              <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-lg">
+                <div className="space-y-4">
+                  <p className="font-semibold text-base lg:text-lg text-[#3c8350]">
                     Simplified Reading Mode
                   </p>
                   <p className="text-sm lg:text-base text-[#5d655f] leading-relaxed">

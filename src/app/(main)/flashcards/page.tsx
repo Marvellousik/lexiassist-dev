@@ -145,8 +145,7 @@ export default function FlashcardsPage() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto">
-      {/* Header */}
+    <div className="space-y-4 max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Flashcards</h1>
@@ -174,14 +173,13 @@ export default function FlashcardsPage() {
         </div>
       </div>
 
-      {/* Progress */}
       <div className="flex items-center justify-between text-sm text-slate-500">
         <span>Card {currentIndex + 1} of {cards.length}</span>
         <div className="flex gap-2">
           <button
             onClick={handleShuffle}
             className={`p-2 rounded-lg transition-colors ${
-              isShuffled ? 'bg-[#4A8B5C] text-white' : 'hover:bg-slate-100'
+              isShuffled ? 'bg-[#3c8350] text-white' : 'hover:bg-slate-100'
             }`}
             title="Shuffle"
           >
@@ -197,24 +195,22 @@ export default function FlashcardsPage() {
         </div>
       </div>
 
-      {/* Flashcard */}
-      <div className="relative h-56 sm:h-72 lg:h-80 perspective-1000">
+      <div className="relative h-56 sm:h-72 lg:h-80" style={{ perspective: '1000px' }}>
         <div
           onClick={handleFlip}
-          className={`relative w-full h-full cursor-pointer transition-transform duration-500 transform-style-3d ${
-            isFlipped ? 'rotate-y-180' : ''
+          className={`relative w-full h-full cursor-pointer transition-transform duration-500 ${
+            isFlipped ? '[transform:rotateY(180deg)]' : ''
           }`}
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {/* Front */}
           <Card
-            className={`absolute inset-0 backface-hidden hover:shadow-lg transition-shadow ${
+            className={`absolute inset-0 hover:shadow-lg transition-shadow ${
               isFlipped ? 'opacity-0' : 'opacity-100'
             }`}
             style={{ backfaceVisibility: 'hidden' }}
           >
             <CardContent className="h-full flex flex-col items-center justify-center p-6 sm:p-8 text-center">
-              <span className="text-xs font-medium text-[#4A8B5C] uppercase tracking-wider mb-3 sm:mb-4">
+              <span className="text-xs font-medium text-[#3c8350] uppercase tracking-wider mb-3 sm:mb-4">
                 {currentCard?.category || 'General'}
               </span>
               <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
@@ -226,9 +222,8 @@ export default function FlashcardsPage() {
             </CardContent>
           </Card>
 
-          {/* Back */}
           <Card
-            className={`absolute inset-0 backface-hidden bg-[#4A8B5C] text-white hover:shadow-lg transition-shadow ${
+            className={`absolute inset-0 bg-[#3c8350] text-white hover:shadow-lg transition-shadow ${
               isFlipped ? 'opacity-100' : 'opacity-0'
             }`}
             style={{ 
@@ -248,7 +243,6 @@ export default function FlashcardsPage() {
         </div>
       </div>
 
-      {/* Navigation */}
       <div className="flex items-center justify-center gap-2 sm:gap-4">
         <Button
           variant="outline"
@@ -275,7 +269,6 @@ export default function FlashcardsPage() {
         </Button>
       </div>
 
-      {/* Actions */}
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
@@ -312,7 +305,6 @@ export default function FlashcardsPage() {
         </Card>
       </div>
 
-      {/* Saved Study Sets */}
       {studySets.length > 0 && (
         <Card>
           <CardHeader title="Your Study Sets" />
@@ -340,7 +332,6 @@ export default function FlashcardsPage() {
         </Card>
       )}
 
-      {/* Add Card Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-md mx-4">
@@ -364,7 +355,7 @@ export default function FlashcardsPage() {
                   value={newCardFront}
                   onChange={(e) => setNewCardFront(e.target.value)}
                   placeholder="Enter the question..."
-                  className="w-full p-3 text-sm border border-slate-200 rounded-lg focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none h-20"
+                  className="w-full p-3 text-sm border border-slate-200 rounded-lg focus:border-[#3c8350] focus:ring-2 focus:ring-[#3c8350]/20 focus:outline-none resize-none h-20"
                 />
               </div>
               <div>
@@ -375,7 +366,7 @@ export default function FlashcardsPage() {
                   value={newCardBack}
                   onChange={(e) => setNewCardBack(e.target.value)}
                   placeholder="Enter the answer..."
-                  className="w-full p-3 text-sm border border-slate-200 rounded-lg focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none h-20"
+                  className="w-full p-3 text-sm border border-slate-200 rounded-lg focus:border-[#3c8350] focus:ring-2 focus:ring-[#3c8350]/20 focus:outline-none resize-none h-20"
                 />
               </div>
               <div className="flex gap-2 pt-2">
@@ -398,15 +389,6 @@ export default function FlashcardsPage() {
           </Card>
         </div>
       )}
-
-      <style jsx>{`
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-        .rotate-y-180 {
-          transform: rotateY(180deg);
-        }
-      `}</style>
     </div>
   );
 }

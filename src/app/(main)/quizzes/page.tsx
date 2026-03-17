@@ -183,11 +183,11 @@ export default function QuizzesPage() {
 
   if (showResults && quizResult) {
     return (
-      <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
+      <div className="space-y-4 max-w-2xl mx-auto">
         <Card className="text-center py-8 sm:py-12">
           <CardContent>
-            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-[#4A8B5C]/10 flex items-center justify-center">
-              <Trophy className="h-8 w-8 sm:h-10 sm:w-10 text-[#4A8B5C]" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-[#3c8350]/10 flex items-center justify-center">
+              <Trophy className="h-8 w-8 sm:h-10 sm:w-10 text-[#3c8350]" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
               {quizResult.score}%
@@ -216,7 +216,6 @@ export default function QuizzesPage() {
           </CardContent>
         </Card>
 
-        {/* Question Review */}
         <Card>
           <CardHeader title="Question Review" />
           <CardContent className="p-3 sm:p-4">
@@ -268,8 +267,7 @@ export default function QuizzesPage() {
 
   if (currentQuiz && currentQuestion) {
     return (
-      <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
-        {/* Progress */}
+      <div className="space-y-4 max-w-2xl mx-auto">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-slate-700">
@@ -282,17 +280,15 @@ export default function QuizzesPage() {
           </div>
         </div>
 
-        {/* Progress Bar */}
         <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#4A8B5C] transition-all duration-300"
+            className="h-full bg-[#3c8350] transition-all duration-300"
             style={{
               width: `${((currentQuestionIndex + 1) / currentQuiz.questions.length) * 100}%`,
             }}
           />
         </div>
 
-        {/* Question */}
         <Card>
           <CardContent className="p-4 sm:p-6">
             <div className="mb-4 sm:mb-6">
@@ -304,7 +300,6 @@ export default function QuizzesPage() {
               </h3>
             </div>
 
-            {/* Options */}
             <div className="space-y-2 sm:space-y-3">
               {currentQuestion.type === 'multiple_choice' ? (
                 currentQuestion.options?.map((option) => (
@@ -319,7 +314,7 @@ export default function QuizzesPage() {
                           : 'border-red-500 bg-red-50'
                         : isAnswered && option === currentQuestion.correctAnswer
                         ? 'border-green-500 bg-green-50'
-                        : 'border-slate-200 hover:border-[#4A8B5C] hover:bg-slate-50'
+                        : 'border-slate-200 hover:border-[#3c8350] hover:bg-slate-50'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -347,7 +342,7 @@ export default function QuizzesPage() {
                             : 'border-red-500 bg-red-50'
                           : isAnswered && value === currentQuestion.correctAnswer
                           ? 'border-green-500 bg-green-50'
-                          : 'border-slate-200 hover:border-[#4A8B5C] hover:bg-slate-50'
+                          : 'border-slate-200 hover:border-[#3c8350] hover:bg-slate-50'
                       }`}
                     >
                       <span className="font-medium text-sm">{value ? 'True' : 'False'}</span>
@@ -357,7 +352,6 @@ export default function QuizzesPage() {
               )}
             </div>
 
-            {/* Explanation */}
             {isAnswered && currentQuestion.explanation && (
               <div className={`mt-4 p-3 sm:p-4 rounded-lg ${isCorrect ? 'bg-green-50' : 'bg-red-50'}`}>
                 <p className={`text-sm ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
@@ -369,7 +363,6 @@ export default function QuizzesPage() {
           </CardContent>
         </Card>
 
-        {/* Navigation */}
         <div className="flex justify-end">
           <Button
             onClick={handleNext}
@@ -385,10 +378,8 @@ export default function QuizzesPage() {
     );
   }
 
-  // Quiz Generator / Home View
   return (
-    <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto">
-      {/* Header */}
+    <div className="space-y-4 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Quizzes</h1>
@@ -398,7 +389,6 @@ export default function QuizzesPage() {
         </div>
       </div>
 
-      {/* Stats */}
       <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3">
         <Card>
           <CardContent className="p-3 sm:p-4">
@@ -450,7 +440,6 @@ export default function QuizzesPage() {
         </Card>
       </div>
 
-      {/* Generate Quiz */}
       <Card>
         <CardHeader
           title="Generate Custom Quiz"
@@ -461,7 +450,7 @@ export default function QuizzesPage() {
             value={sourceText}
             onChange={(e) => setSourceText(e.target.value)}
             placeholder="Paste your notes, text, or study material here..."
-            className="w-full h-32 sm:h-40 p-3 sm:p-4 text-sm text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none"
+            className="w-full h-24 sm:h-28 p-3 sm:p-4 text-sm text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#3c8350] focus:ring-2 focus:ring-[#3c8350]/20 focus:outline-none resize-none"
           />
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <span className="text-sm text-slate-500">
@@ -491,14 +480,13 @@ export default function QuizzesPage() {
         </CardContent>
       </Card>
 
-      {/* Quick Start */}
       <Card>
         <CardHeader title="Quick Practice" />
         <CardContent className="p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#4A8B5C]/10 flex-shrink-0">
-                <Brain className="h-6 w-6 text-[#4A8B5C]" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#3c8350]/10 flex-shrink-0">
+                <Brain className="h-6 w-6 text-[#3c8350]" />
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900">General Knowledge Quiz</h3>
@@ -512,7 +500,6 @@ export default function QuizzesPage() {
         </CardContent>
       </Card>
 
-      {/* Recent History */}
       {quizHistory.length > 0 && (
         <Card>
           <CardHeader title="Recent Attempts" />

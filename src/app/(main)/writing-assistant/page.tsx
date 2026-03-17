@@ -47,7 +47,6 @@ export default function WritingAssistantPage() {
   const [history, setHistory] = useState<RewriteHistory[]>([]);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
-  // Initialize speech recognition
   useEffect(() => {
     if (typeof window !== 'undefined' && 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -108,7 +107,6 @@ export default function WritingAssistantPage() {
 
     setIsRewriting(true);
 
-    // Simulate AI rewriting
     setTimeout(() => {
       let rewritten = '';
       const mode = rewriteModes.find((m) => m.id === selectedMode);
@@ -131,7 +129,6 @@ export default function WritingAssistantPage() {
       setRewrittenText(rewritten);
       setIsRewriting(false);
 
-      // Add to history
       const newItem: RewriteHistory = {
         id: Date.now().toString(),
         original: text.slice(0, 100) + '...',
@@ -162,8 +159,7 @@ export default function WritingAssistantPage() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto">
-      {/* Header */}
+    <div className="space-y-4 max-w-5xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Writing Assistant</h1>
@@ -180,7 +176,6 @@ export default function WritingAssistantPage() {
         </Button>
       </div>
 
-      {/* Mode Selection */}
       <Card className="bg-slate-50">
         <CardContent className="p-3 sm:p-4">
           <div className="flex items-center gap-2 mb-3">
@@ -194,7 +189,7 @@ export default function WritingAssistantPage() {
                 onClick={() => setSelectedMode(mode.id)}
                 className={`p-3 rounded-xl text-left transition-all ${
                   selectedMode === mode.id
-                    ? 'bg-[#4A8B5C] text-white'
+                    ? 'bg-[#3c8350] text-white'
                     : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                 }`}
               >
@@ -209,103 +204,96 @@ export default function WritingAssistantPage() {
       </Card>
 
       <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-        {/* Input Section */}
-        <div className="space-y-4">
-          <Card className="h-full">
-            <CardHeader
-              title="Your Text"
-              description={isRecording ? '🎙️ Listening... Speak now' : 'Type or use voice input'}
-              action={
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleClear}
-                  leftIcon={<Trash2 size={16} />}
-                  disabled={!text}
-                >
-                  Clear
-                </Button>
-              }
-            />
-            <CardContent className="p-3 sm:p-4">
-              {isRecording && (
-                <div className="mb-3 p-3 bg-red-50 rounded-lg flex items-center gap-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                  <span className="text-sm text-red-600 font-medium">Recording in progress...</span>
-                </div>
-              )}
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Start typing or click 'Voice Input' to speak..."
-                className="w-full h-64 sm:h-80 p-3 sm:p-4 text-sm text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#4A8B5C] focus:ring-2 focus:ring-[#4A8B5C]/20 focus:outline-none resize-none"
-              />
-              <div className="flex items-center justify-between mt-3">
-                <span className="text-xs text-slate-500">
-                  {text.split(/\s+/).filter(Boolean).length} words
-                </span>
-                <span className="text-xs text-slate-500">
-                  {text.length} characters
-                </span>
+        <Card>
+          <CardHeader
+            title="Your Text"
+            description={isRecording ? '🎙️ Listening... Speak now' : 'Type or use voice input'}
+            action={
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClear}
+                leftIcon={<Trash2 size={16} />}
+                disabled={!text}
+              >
+                Clear
+              </Button>
+            }
+          />
+          <CardContent className="p-3 sm:p-4">
+            {isRecording && (
+              <div className="mb-3 p-3 bg-red-50 rounded-lg flex items-center gap-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                <span className="text-sm text-red-600 font-medium">Recording in progress...</span>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Output Section */}
-        <div className="space-y-4">
-          <Card className="h-full">
-            <CardHeader
-              title="Enhanced Text"
-              description="AI-enhanced version will appear here"
-              action={
-                rewrittenText && (
-                  <div className="flex gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleCopy}
-                      leftIcon={copied ? <Check size={16} /> : <Copy size={16} />}
-                    >
-                      {copied ? 'Copied' : 'Copy'}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleSave}
-                      leftIcon={<Save size={16} />}
-                    >
-                      Save
-                    </Button>
-                  </div>
-                )
-              }
+            )}
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Start typing or click 'Voice Input' to speak..."
+              className="w-full h-64 sm:h-80 p-3 sm:p-4 text-sm text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#3c8350] focus:ring-2 focus:ring-[#3c8350]/20 focus:outline-none resize-none"
             />
-            <CardContent className="p-3 sm:p-4">
-              {rewrittenText ? (
-                <div className="h-64 sm:h-80 overflow-y-auto">
-                  <div className="prose prose-sm max-w-none">
-                    <div className="whitespace-pre-wrap text-sm text-slate-700 leading-relaxed">
-                      {rewrittenText}
-                    </div>
+            <div className="flex items-center justify-between mt-3">
+              <span className="text-xs text-slate-500">
+                {text.split(/\s+/).filter(Boolean).length} words
+              </span>
+              <span className="text-xs text-slate-500">
+                {text.length} characters
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader
+            title="Enhanced Text"
+            description="AI-enhanced version will appear here"
+            action={
+              rewrittenText && (
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleCopy}
+                    leftIcon={copied ? <Check size={16} /> : <Copy size={16} />}
+                  >
+                    {copied ? 'Copied' : 'Copy'}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSave}
+                    leftIcon={<Save size={16} />}
+                  >
+                    Save
+                  </Button>
+                </div>
+              )
+            }
+          />
+          <CardContent className="p-3 sm:p-4">
+            {rewrittenText ? (
+              <div className="h-64 sm:h-80 overflow-y-auto">
+                <div className="prose prose-sm max-w-none">
+                  <div className="whitespace-pre-wrap text-sm text-slate-700 leading-relaxed">
+                    {rewrittenText}
                   </div>
                 </div>
-              ) : (
-                <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center">
-                  <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                    <Sparkles className="h-8 w-8 text-slate-400" />
-                  </div>
-                  <p className="text-slate-500 text-sm">
-                    Your enhanced text will appear here
-                  </p>
+              </div>
+            ) : (
+              <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                  <Sparkles className="h-8 w-8 text-slate-400" />
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+                <p className="text-slate-500 text-sm">
+                  Your enhanced text will appear here
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Action Button */}
       <div className="flex justify-center">
         <Button
           size="lg"
@@ -318,7 +306,6 @@ export default function WritingAssistantPage() {
         </Button>
       </div>
 
-      {/* Features */}
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
@@ -355,7 +342,6 @@ export default function WritingAssistantPage() {
         </Card>
       </div>
 
-      {/* History */}
       {history.length > 0 && (
         <Card>
           <CardHeader title="Recent Enhancements" />
@@ -367,8 +353,8 @@ export default function WritingAssistantPage() {
                   className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4A8B5C]/10 flex-shrink-0">
-                      <Edit3 size={14} className="text-[#4A8B5C]" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#3c8350]/10 flex-shrink-0">
+                      <Edit3 size={14} className="text-[#3c8350]" />
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-700 truncate">
