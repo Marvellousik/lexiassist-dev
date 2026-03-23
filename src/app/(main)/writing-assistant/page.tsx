@@ -1,54 +1,22 @@
 'use client';
 
-import { Card, CardContent, CardHeader } from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
 import { useState, useRef, useEffect } from 'react';
-import {
-  Mic,
-  MicOff,
-  Sparkles,
-  Copy,
-  Check,
-  Save,
-  Download,
-  Trash2,
-  Edit3,
-  Wand2,
-  FileText,
-  RotateCcw,
-  Type,
-} from 'lucide-react';
+import { Icon } from "@/components/Icon";
 import { toast } from 'sonner';
-
-type RewriteMode = 'grammar' | 'academic' | 'simple' | 'creative';
-
-interface RewriteHistory {
-  id: string;
-  original: string;
-  rewritten: string;
-  mode: RewriteMode;
-  createdAt: Date;
-}
-
-const rewriteModes: { id: RewriteMode; label: string; description: string }[] = [
-  { id: 'grammar', label: 'Grammar & Spelling', description: 'Fix errors and improve clarity' },
-  { id: 'academic', label: 'Academic', description: 'Formal academic tone' },
-  { id: 'simple', label: 'Simplify', description: 'Easier to understand' },
-  { id: 'creative', label: 'Creative', description: 'More engaging style' },
-];
 
 export default function WritingAssistantPage() {
   const [text, setText] = useState('');
-  const [rewrittenText, setRewrittenText] = useState('');
-  const [isRewriting, setIsRewriting] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [selectedMode, setSelectedMode] = useState<RewriteMode>('grammar');
-  const [copied, setCopied] = useState(false);
-  const [history, setHistory] = useState<RewriteHistory[]>([]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showTools, setShowTools] = useState(false);
+  const [expandedTool, setExpandedTool] = useState<string | null>('tools');
+  const [selectedFont, setSelectedFont] = useState('Roboto');
+  const [selectedSpacing, setSelectedSpacing] = useState('Normal');
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
+  // Initialize speech recognition
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = true;
@@ -56,18 +24,17 @@ export default function WritingAssistantPage() {
 
       recognitionRef.current.onresult = (event) => {
         let finalTranscript = '';
-        let interimTranscript = '';
 
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
             finalTranscript += transcript + ' ';
-          } else {
-            interimTranscript += transcript;
           }
         }
 
-        setText((prev) => prev + finalTranscript);
+        if (finalTranscript) {
+          setText((prev) => prev + finalTranscript);
+        }
       };
 
       recognitionRef.current.onerror = (event) => {
@@ -99,277 +66,264 @@ export default function WritingAssistantPage() {
     }
   };
 
-  const handleRewrite = async () => {
+  const handleCleanAndStructure = () => {
     if (!text.trim()) {
-      toast.error('Please enter some text to rewrite');
+      toast.error('Please enter some text first');
       return;
     }
-
-    setIsRewriting(true);
-
-    setTimeout(() => {
-      let rewritten = '';
-      const mode = rewriteModes.find((m) => m.id === selectedMode);
-
-      switch (selectedMode) {
-        case 'grammar':
-          rewritten = `✅ Grammar Enhanced (${mode?.label}):\n\n${text.trim()}\n\n📝 Improvements made:\n• Corrected grammar and punctuation\n• Improved sentence structure\n• Enhanced clarity and flow`;
-          break;
-        case 'academic':
-          rewritten = `🎓 Academic Version (${mode?.label}):\n\nThe following text has been restructured to adhere to academic writing standards:\n\n${text.trim()}\n\n📝 Academic improvements:\n• Formal tone and vocabulary\n• Objective perspective\n• Proper academic structure`;
-          break;
-        case 'simple':
-          rewritten = `💡 Simplified Version (${mode?.label}):\n\n${text.trim()}\n\n📝 Simplifications:\n• Shorter sentences\n• Common vocabulary\n• Clear and concise language`;
-          break;
-        case 'creative':
-          rewritten = `✨ Creative Version (${mode?.label}):\n\n${text.trim()}\n\n📝 Creative enhancements:\n• Engaging narrative style\n• Vivid descriptions\n• Dynamic sentence variety`;
-          break;
-      }
-
-      setRewrittenText(rewritten);
-      setIsRewriting(false);
-
-      const newItem: RewriteHistory = {
-        id: Date.now().toString(),
-        original: text.slice(0, 100) + '...',
-        rewritten: rewritten.slice(0, 100) + '...',
-        mode: selectedMode,
-        createdAt: new Date(),
-      };
-      setHistory((prev) => [newItem, ...prev].slice(0, 10));
-
-      toast.success('Text rewritten successfully');
-    }, 2000);
+    toast.success('Text cleaned and structured!');
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(rewrittenText);
-    setCopied(true);
-    toast.success('Copied to clipboard');
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyToClipboard = () => {
+    if (text) {
+      navigator.clipboard.writeText(text);
+      toast.success('Copied to clipboard');
+    }
   };
 
-  const handleClear = () => {
-    setText('');
-    setRewrittenText('');
+  const handleExport = () => {
+    toast.success('Export options coming soon!');
   };
 
-  const handleSave = () => {
-    toast.success('Saved to your library');
+  const toggleTool = (tool: string) => {
+    setExpandedTool(expandedTool === tool ? null : tool);
   };
 
   return (
-    <div className="space-y-4 max-w-5xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Writing Assistant</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            AI-powered writing enhancement with voice input
-          </p>
-        </div>
-        <Button
-          variant={isRecording ? 'destructive' : 'outline'}
-          leftIcon={isRecording ? <MicOff size={18} /> : <Mic size={18} />}
-          onClick={toggleRecording}
-        >
-          {isRecording ? 'Stop Recording' : 'Voice Input'}
-        </Button>
-      </div>
-
-      <Card className="bg-slate-50">
-        <CardContent className="p-3 sm:p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Wand2 size={18} className="text-slate-500" />
-            <span className="text-sm font-medium text-slate-700">Rewrite Mode:</span>
+    <div className="flex h-[calc(100vh-4rem)] bg-[#fafafa] overflow-hidden -mx-4 -my-4 sm:-mx-6 lg:-mx-8">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Header */}
+        <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="bg-[#3c8350] rounded-full p-2">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-semibold text-gray-900">Writing Assistant</h1>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-            {rewriteModes.map((mode) => (
-              <button
-                key={mode.id}
-                onClick={() => setSelectedMode(mode.id)}
-                className={`p-3 rounded-xl text-left transition-all ${
-                  selectedMode === mode.id
-                    ? 'bg-[#3c8350] text-white'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-                }`}
-              >
-                <p className="font-medium text-sm">{mode.label}</p>
-                <p className={`text-xs mt-1 ${selectedMode === mode.id ? 'text-white/80' : 'text-slate-500'}`}>
-                  {mode.description}
-                </p>
-              </button>
-            ))}
+
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setShowTools(!showTools)}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Toggle tools"
+            >
+              <Icon name="settings" className="w-5 h-5 text-gray-600" />
+            </button>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? <Icon name="sun" className="w-5 h-5 text-gray-600" /> : <Icon name="moon" className="w-5 h-5 text-gray-600" />}
+            </button>
+            <div className="w-10 h-10 rounded-full bg-[#3c8350] flex items-center justify-center text-white font-medium ring-2 ring-gray-200">
+              U
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </header>
 
-      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-        <Card>
-          <CardHeader
-            title="Your Text"
-            description={isRecording ? '🎙️ Listening... Speak now' : 'Type or use voice input'}
-            action={
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleClear}
-                leftIcon={<Trash2 size={16} />}
-                disabled={!text}
-              >
-                Clear
-              </Button>
-            }
-          />
-          <CardContent className="p-3 sm:p-4">
-            {isRecording && (
-              <div className="mb-3 p-3 bg-red-50 rounded-lg flex items-center gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                <span className="text-sm text-red-600 font-medium">Recording in progress...</span>
-              </div>
-            )}
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Start typing or click 'Voice Input' to speak..."
-              className="w-full h-64 sm:h-80 p-3 sm:p-4 text-sm text-slate-700 bg-slate-50 rounded-xl border border-slate-200 focus:border-[#3c8350] focus:ring-2 focus:ring-[#3c8350]/20 focus:outline-none resize-none"
-            />
-            <div className="flex items-center justify-between mt-3">
-              <span className="text-xs text-slate-500">
-                {text.split(/\s+/).filter(Boolean).length} words
-              </span>
-              <span className="text-xs text-slate-500">
-                {text.length} characters
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader
-            title="Enhanced Text"
-            description="AI-enhanced version will appear here"
-            action={
-              rewrittenText && (
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleCopy}
-                    leftIcon={copied ? <Check size={16} /> : <Copy size={16} />}
-                  >
-                    {copied ? 'Copied' : 'Copy'}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleSave}
-                    leftIcon={<Save size={16} />}
-                  >
-                    Save
-                  </Button>
-                </div>
-              )
-            }
-          />
-          <CardContent className="p-3 sm:p-4">
-            {rewrittenText ? (
-              <div className="h-64 sm:h-80 overflow-y-auto">
-                <div className="prose prose-sm max-w-none">
-                  <div className="whitespace-pre-wrap text-sm text-slate-700 leading-relaxed">
-                    {rewrittenText}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                  <Sparkles className="h-8 w-8 text-slate-400" />
-                </div>
-                <p className="text-slate-500 text-sm">
-                  Your enhanced text will appear here
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="flex justify-center">
-        <Button
-          size="lg"
-          onClick={handleRewrite}
-          isLoading={isRewriting}
-          leftIcon={<Wand2 size={20} />}
-          disabled={!text.trim()}
-        >
-          {isRewriting ? 'Enhancing...' : 'Enhance Writing'}
-        </Button>
-      </div>
-
-      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
-        <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 flex-shrink-0">
-              <Mic className="h-5 w-5 text-blue-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-medium text-slate-900 text-sm">Voice to Text</p>
-              <p className="text-xs sm:text-sm text-slate-500">Speak and transcribe</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 flex-shrink-0">
-              <RotateCcw className="h-5 w-5 text-purple-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-medium text-slate-900 text-sm">Multiple Modes</p>
-              <p className="text-xs sm:text-sm text-slate-500">4 rewriting styles</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="cursor-pointer hover:shadow-md transition-all">
-          <CardContent className="p-3 sm:p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 flex-shrink-0">
-              <Download className="h-5 w-5 text-green-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-medium text-slate-900 text-sm">Export</p>
-              <p className="text-xs sm:text-sm text-slate-500">PDF/DOCX coming soon</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {history.length > 0 && (
-        <Card>
-          <CardHeader title="Recent Enhancements" />
-          <CardContent className="p-3 sm:p-4">
-            <div className="space-y-2 sm:space-y-3">
-              {history.slice(0, 5).map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
+        {/* Writing Area */}
+        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-hidden flex flex-col">
+          <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full">
+            <div className="bg-[#f4f4f4] border border-gray-200 rounded-3xl flex flex-col flex-1 shadow-sm overflow-hidden">
+              {/* Voice Controls */}
+              <div className="flex items-center gap-4 px-6 md:px-8 pt-6 pb-4 border-b border-gray-200 bg-white/50 flex-shrink-0">
+                <button
+                  onClick={toggleRecording}
+                  className={`p-2.5 rounded-full transition-all ${
+                    isRecording 
+                      ? 'bg-red-50 text-red-600 ring-2 ring-red-200' 
+                      : 'hover:bg-gray-200 text-[#3c8350]'
+                  }`}
+                  aria-label={isRecording ? 'Stop recording' : 'Start recording'}
                 >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#3c8350]/10 flex-shrink-0">
-                      <Edit3 size={14} className="text-[#3c8350]" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-slate-700 truncate">
-                        {item.original}
-                      </p>
-                      <p className="text-xs text-slate-500 capitalize">
-                        {item.mode} mode • {new Date(item.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
+                  <Icon name="microphone" className="w-5 h-5" />
+                </button>
+                <button
+                  className="p-2.5 hover:bg-gray-200 rounded-full transition-colors"
+                  aria-label="Audio visualization"
+                >
+                  <Icon name="audio-waveform" className="w-5 h-5 text-gray-700" />
+                </button>
+
+                <button
+                  onClick={handleCleanAndStructure}
+                  disabled={!text}
+                  className="ml-auto bg-[#2b5d39] text-white px-6 md:px-8 py-2.5 md:py-3 rounded-full hover:bg-[#234a2d] transition-all font-medium text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow"
+                >
+                  Clean and Structure
+                </button>
+              </div>
+
+              {/* Text Area */}
+              <div className="flex-1 overflow-hidden flex flex-col">
+                <textarea
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  placeholder="Start typing or use voice input to begin writing..."
+                  className="w-full flex-1 bg-transparent resize-none outline-none text-gray-900 text-base md:text-lg leading-relaxed placeholder:text-gray-400 px-6 md:px-8 py-6 overflow-y-auto"
+                  style={{ fontFamily: selectedFont }}
+                />
+              </div>
+
+              {/* Copy Button */}
+              {text && (
+                <div className="flex justify-end px-6 md:px-8 pb-6 pt-4 border-t border-gray-200 bg-white/50 flex-shrink-0">
+                  <button
+                    onClick={handleCopyToClipboard}
+                    className="bg-[#2b5d39] text-white px-6 md:px-8 py-2.5 md:py-3 rounded-full hover:bg-[#234a2d] transition-all font-medium text-sm md:text-base flex items-center gap-2 shadow-sm hover:shadow"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                    Copy to clipboard
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </main>
+      </div>
+
+      {/* Right Sidebar - Tools Panel */}
+      <aside
+        className={`${
+          showTools ? 'translate-x-0' : 'translate-x-full'
+        } md:translate-x-0 fixed md:relative right-0 top-16 md:top-0 h-[calc(100vh-4rem)] md:h-full w-80 bg-[#f4f4f4] border-l border-gray-200 rounded-tl-3xl rounded-bl-3xl shadow-2xl md:shadow-none transition-transform duration-300 z-50 overflow-y-auto flex flex-col`}
+      >
+        <div className="p-6 flex-1 flex flex-col">
+          {/* Close button for mobile */}
+          <button
+            onClick={() => setShowTools(false)}
+            className="md:hidden absolute top-4 right-4 p-2 hover:bg-gray-200 rounded-lg transition-colors"
+            aria-label="Close tools"
+          >
+            <Icon name="x" className="w-5 h-5" />
+          </button>
+
+          {/* Tools Header - Collapsible */}
+          <div className="mb-6">
+            <button
+              onClick={() => toggleTool('tools')}
+              className="w-full flex items-center justify-between group"
+            >
+              <h2 className="text-xl text-[#3c8350] font-medium tracking-tight">Tools</h2>
+              <div className={`w-10 h-10 bg-[#3c8350] rounded-full flex items-center justify-center transition-transform duration-200 ${
+                expandedTool === 'tools' ? '' : 'rotate-180'
+              }`}>
+                <Icon name="chevron-down" className="w-5 h-5 text-white" />
+              </div>
+            </button>
+          </div>
+
+          {/* Collapsible Tools Section */}
+          <div className={`overflow-hidden transition-all duration-300 ${
+            expandedTool === 'tools' ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+          }`}>
+            {/* Font Choice Dropdown */}
+            <div className="mb-4">
+              <button 
+                onClick={() => toggleTool('font')}
+                className="w-full flex items-center justify-between text-left py-3 px-4 text-lg text-gray-700 hover:bg-white/50 rounded-lg transition-colors"
+              >
+                <span className="font-normal">Font Choice</span>
+                <Icon name="chevron-down" className={`w-5 h-5 text-[#3c8350] transition-transform duration-200 ${
+                  expandedTool === 'font' ? 'rotate-180' : ''
+                }`} />
+              </button>
+              {expandedTool === 'font' && (
+                <div className="mt-2 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                  {['Roboto', 'Arial', 'Times New Roman', 'Georgia', 'Courier New'].map((font) => (
+                    <button
+                      key={font}
+                      onClick={() => {
+                        setSelectedFont(font);
+                        setExpandedTool(null);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 hover:bg-gray-50 transition-colors ${
+                        selectedFont === font ? 'bg-[#3c8350]/10 text-[#3c8350] font-medium' : 'text-gray-700'
+                      }`}
+                      style={{ fontFamily: font }}
+                    >
+                      {font}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Spacing Dropdown */}
+            <div className="mb-4">
+              <button 
+                onClick={() => toggleTool('spacing')}
+                className="w-full flex items-center justify-between text-left py-3 px-4 text-lg text-gray-700 hover:bg-white/50 rounded-lg transition-colors"
+              >
+                <span className="font-normal">Spacing</span>
+                <Icon name="chevron-down" className={`w-5 h-5 text-[#3c8350] transition-transform duration-200 ${
+                  expandedTool === 'spacing' ? 'rotate-180' : ''
+                }`} />
+              </button>
+              {expandedTool === 'spacing' && (
+                <div className="mt-2 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                  {['Compact', 'Normal', 'Relaxed', 'Loose'].map((spacing) => (
+                    <button
+                      key={spacing}
+                      onClick={() => {
+                        setSelectedSpacing(spacing);
+                        setExpandedTool(null);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 hover:bg-gray-50 transition-colors ${
+                        selectedSpacing === spacing ? 'bg-[#3c8350]/10 text-[#3c8350] font-medium' : 'text-gray-700'
+                      }`}
+                    >
+                      {spacing}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Tinted Backgrounds Toggle */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between py-3 px-4 hover:bg-white/50 rounded-lg transition-colors">
+                <span className="text-lg text-gray-700 font-normal">Tinted backgrounds</span>
+                <button className="w-12 h-12 rounded-full border-2 border-gray-400 flex items-center justify-center hover:border-[#3c8350] hover:bg-[#3c8350]/5 transition-all relative overflow-hidden">
+                  <Icon name="x" className="w-6 h-6 text-gray-400" strokeWidth={2.5} />
+                </button>
+              </div>
+            </div>
+
+            {/* Bookmark Icon */}
+            <div className="mb-4">
+              <button className="p-3 hover:bg-white/50 rounded-lg transition-colors flex items-center gap-2 text-gray-600 hover:text-[#3c8350]" aria-label="Bookmark">
+                <Icon name="bookmark" className="w-6 h-6" />
+                <span className="text-base font-normal">Save preferences</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Export Button - Always visible at bottom */}
+          <div className="mt-auto pt-6 border-t border-gray-200">
+            <button
+              onClick={handleExport}
+              className="w-full bg-[#2b5d39] text-white px-6 py-4 rounded-full hover:bg-[#234a2d] transition-all font-medium text-lg flex items-center justify-center gap-3 shadow-sm hover:shadow"
+            >
+              <Icon name="download" className="w-5 h-5" />
+              Export options
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Overlay for mobile */}
+      {showTools && (
+        <div
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setShowTools(false)}
+        />
       )}
     </div>
   );

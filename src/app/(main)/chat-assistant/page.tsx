@@ -3,17 +3,7 @@
 import { Card, CardContent } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { useState, useRef, useEffect } from 'react';
-import {
-  Send,
-  Bot,
-  User,
-  Sparkles,
-  Trash2,
-  Clock,
-  BookOpen,
-  Paperclip,
-  Brain,
-} from 'lucide-react';
+import { Icon } from '@/components/Icon';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
@@ -135,7 +125,7 @@ export default function ChatAssistantPage() {
             variant="ghost"
             size="sm"
             onClick={handleClear}
-            leftIcon={<Trash2 size={16} />}
+            leftIcon={<Icon name="trash" size={16} />}
             disabled={messages.length === 0}
           >
             Clear
@@ -154,7 +144,7 @@ export default function ChatAssistantPage() {
         <Card className="lg:col-span-1 hidden lg:flex flex-col">
           <CardContent className="p-4 flex flex-col h-[500px]">
             <div className="flex items-center gap-2 mb-4">
-              <Clock size={16} className="text-slate-500" />
+              <Icon name="clock" size={16} className="text-slate-500" />
               <span className="text-sm font-medium text-slate-700">Recent</span>
             </div>
             <div className="flex-1 overflow-y-auto space-y-2">
@@ -178,12 +168,7 @@ export default function ChatAssistantPage() {
                 ))
               )}
             </div>
-            <div className="pt-4 border-t border-slate-100 mt-4">
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-                <BookOpen size={16} />
-                <span>Course materials integrated</span>
-              </div>
-            </div>
+
           </CardContent>
         </Card>
 
@@ -193,7 +178,7 @@ export default function ChatAssistantPage() {
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-[#3c8350]/10 flex items-center justify-center mb-4">
-                    <Brain className="h-8 w-8 text-[#3c8350]" />
+                    <Icon name="brain" className="h-8 w-8 text-[#3c8350]" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2 text-center">
                     How can I help you today?
@@ -225,11 +210,11 @@ export default function ChatAssistantPage() {
                     <Avatar className="h-8 w-8 flex-shrink-0">
                       {message.role === 'user' ? (
                         <AvatarFallback className="bg-slate-200 text-slate-700">
-                          <User size={14} />
+                          <Icon name="user" size={14} />
                         </AvatarFallback>
                       ) : (
                         <AvatarFallback className="bg-[#3c8350] text-white">
-                          <Bot size={14} />
+                          <Icon name="robot" size={14} />
                         </AvatarFallback>
                       )}
                     </Avatar>
@@ -261,7 +246,7 @@ export default function ChatAssistantPage() {
                 <div className="flex gap-3">
                   <Avatar className="h-8 w-8 flex-shrink-0">
                     <AvatarFallback className="bg-[#3c8350] text-white">
-                      <Bot size={14} />
+                      <Icon name="robot" size={14} />
                     </AvatarFallback>
                   </Avatar>
                   <div className="bg-slate-100 rounded-2xl px-4 py-3">
@@ -288,7 +273,7 @@ export default function ChatAssistantPage() {
                   className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors flex-shrink-0"
                   title="Attach file (coming soon)"
                 >
-                  <Paperclip size={20} />
+                  <Icon name="paperclip" size={20} />
                 </button>
                 <div className="flex-1 relative">
                   <textarea
@@ -304,7 +289,7 @@ export default function ChatAssistantPage() {
                 <Button
                   onClick={handleSend}
                   disabled={!input.trim() || isLoading}
-                  leftIcon={<Send size={18} />}
+                  leftIcon={<Icon name="send" size={18} />}
                   className="flex-shrink-0"
                 >
                   Send

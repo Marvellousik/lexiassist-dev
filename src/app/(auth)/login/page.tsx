@@ -1,22 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff } from "lucide-react";
+import { Icon } from "@/components/Icon";
 import Logo from "@/components/auth/Logo";
 import Image from "next/image";
 
 // Social Login Button Component - improved consistency
-function SocialLoginButton({ 
-  provider, 
-  label 
-}: { 
-  provider: "google" | "linkedin"; 
+function SocialLoginButton({
+  provider,
+  label
+}: {
+  provider: "google" | "linkedin";
   label: string;
 }) {
-  const iconSrc = provider === "google" 
-    ? "/images/social/google.png" 
+  const iconSrc = provider === "google"
+    ? "/images/social/google.png"
     : "/images/social/linkedin.png";
 
   return (
@@ -25,10 +26,10 @@ function SocialLoginButton({
       className="flex items-center justify-center gap-3 h-12 px-4 sm:px-6 bg-white border border-[#D0D5DD] rounded-full hover:bg-gray-50 hover:border-[#377749]/30 hover:shadow-sm active:scale-[0.98] transition-all duration-200 text-sm font-medium text-[#374151]"
     >
       <div className="relative w-5 h-5 flex-shrink-0">
-        <Image 
-          src={iconSrc} 
-          alt={`${label} icon`} 
-          fill 
+        <Image
+          src={iconSrc}
+          alt={`${label} icon`}
+          fill
           className="object-contain"
         />
       </div>
@@ -44,7 +45,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,25 +65,21 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen w-full flex bg-white">
       {/* Left Panel - Image Asset Space */}
-      <div className="hidden lg:flex lg:w-1/2 bg-[#ECF3EE] relative items-center justify-center p-8">
+      <div className="hidden lg:flex lg:w-1/2 bg-[#ECF3EE] relative overflow-hidden">
         {/* Logo */}
         <div className="absolute top-8 left-8 z-10">
           <Logo />
         </div>
-        
-        {/* Image Asset Container */}
-        <div className="relative w-full max-w-[480px] aspect-square">
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-center text-[#3C8350]/60">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-2xl bg-[#3C8350]/10 flex items-center justify-center">
-                <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <p className="text-sm font-medium">Add your image asset here</p>
-              <p className="text-xs mt-1">Place image in /public/images/login-asset.png</p>
-            </div>
-          </div>
+
+        {/* Image Asset Container - Full coverage */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/girl on a laptop.svg"
+            alt="Girl studying on laptop"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
       </div>
 
@@ -108,8 +105,8 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email Input */}
             <div className="space-y-2">
-              <label 
-                htmlFor="email" 
+              <label
+                htmlFor="email"
                 className="block text-sm font-medium text-[#101928]"
               >
                 Email
@@ -127,8 +124,8 @@ export default function LoginPage() {
 
             {/* Password Input */}
             <div className="space-y-2">
-              <label 
-                htmlFor="password" 
+              <label
+                htmlFor="password"
                 className="block text-sm font-medium text-[#101928]"
               >
                 Password
@@ -149,7 +146,7 @@ export default function LoginPage() {
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-[#667185] hover:text-[#101928] transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <Icon name="eye-off" size={18} /> : <Icon name="eye" size={18} />}
                 </button>
               </div>
             </div>
@@ -194,8 +191,8 @@ export default function LoginPage() {
           {/* Register Link */}
           <div className="flex items-center justify-center gap-2 text-sm">
             <span className="text-[#555C56]">Don&apos;t have an account?</span>
-            <Link 
-              href="/register" 
+            <Link
+              href="/register"
               className="font-semibold text-[#3C8350] hover:text-[#377749] transition-colors"
             >
               Register

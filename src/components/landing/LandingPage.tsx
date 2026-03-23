@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
 import svgPaths, { imgGroup } from './svg-paths';
+import Logo from '../Logo';
 
 // Image paths (copied to public/landing/)
 const imgHeroStudent = '/landing/ec9f20a6dde2af4d8bbb4ba6c62194cc146a41d0.png';
@@ -15,37 +16,37 @@ const imgCtaBackground = '/landing/ab8d6a9743d4e4b36d8deaeeb53ecfe1e606935d.png'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
   }
 };
 
 const fadeInLeft = {
   hidden: { opacity: 0, x: -40 },
-  visible: { 
-    opacity: 1, 
-    x: 0, 
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } 
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
   }
 };
 
 const fadeInRight = {
   hidden: { opacity: 0, x: 40 },
-  visible: { 
-    opacity: 1, 
-    x: 0, 
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } 
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
   }
 };
 
 const fadeInDown = {
   hidden: { opacity: 0, y: -20 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
   }
 };
 
@@ -53,7 +54,7 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { 
+    transition: {
       staggerChildren: 0.1,
       delayChildren: 0.1
     }
@@ -62,29 +63,10 @@ const staggerContainer = {
 
 const staggerItem = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-  }
-};
-
-const scaleUp = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { 
-    opacity: 1, 
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
-  }
-};
-
-// Continuous floating animation
-const floatAnimation = {
-  y: [0, -10, 0],
-  transition: {
-    duration: 3,
-    repeat: Infinity,
-    ease: "easeInOut"
   }
 };
 
@@ -92,107 +74,44 @@ const floatAnimation = {
 // COMPONENTS
 // ==========================================
 
-// Logo Component
-function Logo({ variant = 'black' }: { variant?: 'black' | 'white' }) {
-  const isBlack = variant === 'black';
-  
-  return (
-    <div className="h-[42px] w-[140px] relative flex-shrink-0">
-      {/* L */}
-      <div className="absolute inset-[28.81%_0_29.57%_94.45%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 7.77602 17.4815">
-          <path d={svgPaths.p28a91900} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* e */}
-      <div className="absolute inset-[36.62%_53.29%_29.02%_36.99%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 13.6017 14.4286">
-          <path d={svgPaths.p37f52800} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* x */}
-      <div className="absolute inset-[37.17%_45.52%_29.57%_46.23%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 11.55 13.9726">
-          <path d={svgPaths.p1147c0c0} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* i */}
-      <div className="absolute inset-[24.26%_43.43%_29.57%_54.35%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 3.1028 19.3944">
-          <path d={svgPaths.p2e544800} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* A */}
-      <div className="absolute inset-[28.39%_32.13%_29.57%_56.8%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 15.5014 17.6589">
-          <path d={svgPaths.p127c2b00} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* s */}
-      <div className="absolute inset-[36.62%_24.45%_29.02%_67.83%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 10.8028 14.4286">
-          <path d={svgPaths.p306408f0} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* s */}
-      <div className="absolute inset-[36.62%_16.44%_29.02%_75.84%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 10.8028 14.4286">
-          <path d={svgPaths.p5a49580} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* i */}
-      <div className="absolute inset-[24.26%_13.67%_29.57%_84.12%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 3.10281 19.3944">
-          <path d={svgPaths.p2ecd9500} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* s */}
-      <div className="absolute inset-[36.62%_5.45%_29.02%_86.83%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 10.8028 14.4286">
-          <path d={svgPaths.p115c4400} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* t */}
-      <div className="absolute inset-[28.15%_62.66%_29.57%_31.24%]">
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 8.53588 17.7602">
-          <path d={svgPaths.p1a289e80} fill={isBlack ? "#040404" : "white"} />
-        </svg>
-      </div>
-      {/* Leaf icon */}
-      <div className="absolute inset-[0_81.46%_28.36%_5.69%]" style={{ maskImage: `url('${imgGroup}')` }}>
-        <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 17.9942 30.0896">
-          <path clipRule="evenodd" d={svgPaths.p23bc8a80} fill={isBlack ? "#040404" : "white"} fillRule="evenodd" />
-        </svg>
-      </div>
-    </div>
-  );
-}
+// Motion-enabled Link component for animations
+const MotionLink = motion(Link);
 
 // Button Component
 function Button({ children, variant = 'primary', href }: { children: React.ReactNode; variant?: 'primary' | 'white'; href?: string }) {
   const baseClasses = "inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]";
-  const variantClasses = variant === 'primary' 
-    ? "bg-[#377749] text-white hover:bg-[#2b5d39] shadow-sm hover:shadow-md" 
+  const variantClasses = variant === 'primary'
+    ? "bg-[#377749] text-white hover:bg-[#2b5d39] shadow-sm hover:shadow-md"
     : "bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]";
-  
-  const MotionComponent = href ? motion(Link) : motion.button;
-  
+
+  if (href) {
+    return (
+      <MotionLink
+        href={href}
+        className={`${baseClasses} ${variantClasses}`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        {children}
+      </MotionLink>
+    );
+  }
+
   return (
-    <MotionComponent
-      href={href || ''}
+    <motion.button
       className={`${baseClasses} ${variantClasses}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.98 }}
     >
       {children}
-    </MotionComponent>
+    </motion.button>
   );
 }
 
 // Animated Section Header Component
 function SectionHeader({ label, children }: { label?: string; children: React.ReactNode }) {
   return (
-    <motion.div 
+    <motion.div
       className="text-center space-y-4 sm:space-y-6"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -200,7 +119,7 @@ function SectionHeader({ label, children }: { label?: string; children: React.Re
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       {label && (
-        <motion.p 
+        <motion.p
           className="text-[#7cac8a] text-sm font-semibold tracking-[0.1em] uppercase"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -222,12 +141,12 @@ function SectionHeader({ label, children }: { label?: string; children: React.Re
 export default function LandingPage() {
   const heroRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
   });
-  
+
   const heroImageY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const heroTextY = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
@@ -240,17 +159,17 @@ export default function LandingPage() {
   return (
     <div className="bg-white w-full overflow-x-hidden">
       {/* Navigation - Fade in from top */}
-      <motion.nav 
+      <motion.nav
         initial="hidden"
         animate="visible"
         variants={fadeInDown}
         className="fixed top-4 sm:top-8 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-[1128px]"
       >
         <div className="bg-white/90 backdrop-blur-md rounded-full px-4 sm:px-6 lg:px-10 py-3 sm:py-4 flex items-center justify-between shadow-sm border border-[#cdcfcd]/30">
-          <Logo variant="black" />
+          <Logo href="/" size="md" />
           <div className="flex items-center gap-2 sm:gap-4">
-            <Button variant="white" href="/login">Login</Button>
-            <Button variant="primary" href="/register">Get Started</Button>
+            <Button variant="white" href="/waitlist">Login</Button>
+            <Button variant="primary" href="/waitlist">Get Started</Button>
           </div>
         </div>
       </motion.nav>
@@ -258,9 +177,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 xl:px-20">
         <div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          
+
           {/* Left Content - Staggered animations */}
-          <motion.div 
+          <motion.div
             className="space-y-6 sm:space-y-8 lg:space-y-10 relative z-10"
             style={{ y: heroTextY, opacity: heroOpacity }}
             variants={staggerContainer}
@@ -269,24 +188,24 @@ export default function LandingPage() {
           >
             {/* Main Headline - Each line animates separately */}
             <div className="space-y-2">
-              <motion.h1 
+              <motion.h1
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[1.1] tracking-[-0.04em] font-normal"
               >
-                <motion.span 
+                <motion.span
                   className="block"
                   variants={fadeInLeft}
                   transition={{ delay: 0 }}
                 >
                   Read.
                 </motion.span>
-                <motion.span 
+                <motion.span
                   className="block text-[#3c8350]"
                   variants={fadeInLeft}
                   transition={{ delay: 0.1 }}
                 >
                   Understand.
                 </motion.span>
-                <motion.span 
+                <motion.span
                   className="block"
                   variants={fadeInLeft}
                   transition={{ delay: 0.2 }}
@@ -295,29 +214,29 @@ export default function LandingPage() {
                 </motion.span>
               </motion.h1>
             </div>
-            
+
             {/* Subtext - 0.2s delay */}
-            <motion.p 
+            <motion.p
               className="text-lg sm:text-xl lg:text-xl text-[#5d655f] leading-relaxed tracking-[-0.02em] max-w-md"
               variants={fadeInLeft}
               transition={{ delay: 0.3 }}
             >
               Lexi Assist is designed to make reading, studying, and writing significantly easier for students who learn differently.
             </motion.p>
-            
+
             {/* Buttons - 0.3s delay */}
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-3 sm:gap-4"
               variants={fadeInUp}
               transition={{ delay: 0.4 }}
             >
-              <Button variant="primary" href="/register">Get Started</Button>
-              <Button variant="white" href="/login">Login</Button>
+              <Button variant="primary" href="/waitlist">Get Started</Button>
+              <Button variant="white" href="/waitlist">Login</Button>
             </motion.div>
           </motion.div>
 
           {/* Right Content - Image + Card */}
-          <motion.div 
+          <motion.div
             className="relative h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-2xl overflow-hidden"
             style={{ y: heroImageY }}
             variants={fadeInRight}
@@ -329,23 +248,23 @@ export default function LandingPage() {
               <img alt="Student reading" className="h-full w-full object-cover" src={imgHeroStudent} />
             </div>
             <div className="absolute inset-0 bg-gradient-to-r from-[#193722]/60 to-transparent" />
-            
+
             {/* Floating Card with continuous float + load animation */}
-            <motion.div 
+            <motion.div
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[300px] lg:w-[320px]"
               initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              animate={{ 
-                opacity: 1, 
-                y: 0, 
+              animate={{
+                opacity: 1,
+                y: 0,
                 scale: 1,
               }}
-              transition={{ 
+              transition={{
                 opacity: { delay: 0.5, duration: 0.6 },
                 y: { delay: 0.5, duration: 0.6 },
                 scale: { delay: 0.5, duration: 0.6 }
               }}
             >
-              <motion.div 
+              <motion.div
                 className="bg-white p-6 sm:p-8 shadow-2xl rounded-lg cursor-pointer"
                 animate={{
                   y: [0, -10, 0],
@@ -358,8 +277,8 @@ export default function LandingPage() {
                     delay: 1.1
                   }
                 }}
-                whileHover={{ 
-                  scale: 1.05, 
+                whileHover={{
+                  scale: 1.05,
                   y: -15,
                   boxShadow: '0 30px 60px rgba(0,0,0,0.2)'
                 }}
@@ -382,14 +301,14 @@ export default function LandingPage() {
       <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-40">
         <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-12">
           <SectionHeader>
-            <motion.h2 
+            <motion.h2
               className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]"
               variants={fadeInUp}
             >
               <span className="block">Learning Shouldn&apos;t Be</span>
               <span>a <em className="font-semibold not-italic text-[#3c8350]">Struggle.</em></span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-lg sm:text-xl text-[#424843] leading-relaxed tracking-[-0.02em]"
               variants={staggerItem}
             >
@@ -398,7 +317,7 @@ export default function LandingPage() {
           </SectionHeader>
 
           {/* Feature Cards - Staggered from bottom */}
-          <motion.div 
+          <motion.div
             className="grid md:grid-cols-3 gap-0 border border-[#cdcfcd] rounded-2xl overflow-hidden"
             variants={staggerContainer}
             initial="hidden"
@@ -410,12 +329,12 @@ export default function LandingPage() {
               { title: "Word Decoding", desc: "Difficulty decoding words and retaining information." },
               { title: "Writing Stress", desc: "Stress and anxiety from writing lengthy assignments." }
             ].map((item, index) => (
-              <motion.div 
+              <motion.div
                 key={index}
                 className="bg-white p-6 sm:p-8 lg:p-10 min-h-[160px] flex items-center border-b md:border-b-0 md:border-r border-[#cdcfcd] last:border-0 cursor-pointer"
                 variants={staggerItem}
                 custom={index}
-                whileHover={{ 
+                whileHover={{
                   backgroundColor: '#f8faf9',
                   scale: 1.02,
                   zIndex: 10
@@ -423,7 +342,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.3 }}
               >
                 <div className="space-y-3">
-                  <motion.p 
+                  <motion.p
                     className="font-medium text-lg leading-snug"
                     whileHover={{ color: '#3c8350' }}
                   >
@@ -456,7 +375,7 @@ export default function LandingPage() {
               reverse={false}
             />
 
-            <motion.div 
+            <motion.div
               className="border-t border-[#cdcfcd]"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
@@ -472,7 +391,7 @@ export default function LandingPage() {
               reverse={true}
             />
 
-            <motion.div 
+            <motion.div
               className="border-t border-[#cdcfcd]"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
@@ -488,7 +407,7 @@ export default function LandingPage() {
               reverse={false}
             />
 
-            <motion.div 
+            <motion.div
               className="border-t border-[#cdcfcd]"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
@@ -518,7 +437,7 @@ export default function LandingPage() {
           </SectionHeader>
 
           <div className="relative space-y-12 sm:space-y-16">
-            <motion.div 
+            <motion.div
               className="absolute left-[30px] sm:left-[62px] top-[60px] sm:top-[80px] bottom-[60px] sm:bottom-[80px] w-px bg-[#cdcfcd] hidden md:block"
               initial={{ scaleY: 0 }}
               whileInView={{ scaleY: 1 }}
@@ -532,7 +451,7 @@ export default function LandingPage() {
               { num: 2, title: "Choose Your Tools", desc: "Activate text-to-speech, AI simplification, or open Reader Mode to customize every aspect of your reading experience." },
               { num: 3, title: "Learn Effortlessly", desc: "Read, study, and write with reduced stress and increased comprehension. Your learning, on your terms." }
             ].map((step, index) => (
-              <motion.div 
+              <motion.div
                 key={step.num}
                 className="flex gap-6 sm:gap-8 lg:gap-28 items-start"
                 initial={{ opacity: 0, x: -30 }}
@@ -540,10 +459,10 @@ export default function LandingPage() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
               >
-                <motion.div 
+                <motion.div
                   className="flex-shrink-0 size-[60px] sm:size-[80px] lg:size-[123px] rounded-full bg-[#193722] flex items-center justify-center text-white text-xl sm:text-2xl lg:text-4xl tracking-tight shadow-md cursor-pointer"
-                  whileHover={{ 
-                    scale: 1.1, 
+                  whileHover={{
+                    scale: 1.1,
                     backgroundColor: '#3c8350',
                     boxShadow: '0 10px 30px rgba(60, 131, 80, 0.3)'
                   }}
@@ -565,7 +484,7 @@ export default function LandingPage() {
       <CTASection />
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white py-6 sm:py-8 px-4 sm:px-6 lg:px-8 xl:px-40"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -573,7 +492,7 @@ export default function LandingPage() {
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-[1128px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Logo variant="black" />
+          <Logo href="/" size="md" />
           <p className="text-sm text-[#5d655f] text-center">
             ©2026 LexiAssist. All rights reserved
           </p>
@@ -583,16 +502,16 @@ export default function LandingPage() {
   );
 }
 
-// Static version for reduced motion preference
+// Static version for reduced motion preference - FULL CONTENT
 function StaticLandingPage() {
   return (
     <div className="bg-white w-full overflow-x-hidden">
       <nav className="fixed top-4 sm:top-8 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-[1128px]">
         <div className="bg-white/90 backdrop-blur-md rounded-full px-4 sm:px-6 lg:px-10 py-3 sm:py-4 flex items-center justify-between shadow-sm border border-[#cdcfcd]/30">
-          <Logo variant="black" />
+          <Logo href="/" size="md" />
           <div className="flex items-center gap-2 sm:gap-4">
-            <Link href="/login" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
-            <Link href="/register" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Get Started</Link>
+            <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
+            <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Get Started</Link>
           </div>
         </div>
       </nav>
@@ -611,8 +530,8 @@ function StaticLandingPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Link href="/register" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Get Started</Link>
-              <Link href="/login" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
+              <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Get Started</Link>
+              <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
             </div>
           </div>
 
@@ -625,7 +544,7 @@ function StaticLandingPage() {
               <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-lg">
                 <div className="space-y-4">
                   <p className="font-semibold text-base lg:text-lg text-[#3c8350]">Simplified Reading Mode</p>
-                  <p className="text-sm lg:text-base text-[#5d655f] leading-relaxed">The mitochondria is often called the powerhouse of the cell.</p>
+                  <p className="text-sm lg:text-base text-[#5d655f] leading-relaxed">The mitochondria is often called the powerhouse of the cell. It converts glucose into energy that cells can use for daily functions.</p>
                 </div>
               </div>
             </div>
@@ -633,22 +552,169 @@ function StaticLandingPage() {
         </div>
       </section>
 
-      {/* Rest of static content... */}
+      {/* Learning Shouldn't Be a Struggle - Static */}
+      <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-40">
+        <div className="max-w-4xl mx-auto text-center space-y-8 sm:space-y-12">
+          <div className="text-center space-y-4 sm:space-y-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]">
+              <span className="block">Learning Shouldn&apos;t Be</span>
+              <span>a <em className="font-semibold not-italic text-[#3c8350]">Struggle.</em></span>
+            </h2>
+            <p className="text-lg sm:text-xl text-[#424843] leading-relaxed tracking-[-0.02em]">
+              We understand the biggest challenges for students who learn differently
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-0 border border-[#cdcfcd] rounded-2xl overflow-hidden">
+            {[
+              { title: "Complex Text", desc: "Struggling to read complex, crowded text." },
+              { title: "Word Decoding", desc: "Difficulty decoding words and retaining information." },
+              { title: "Writing Stress", desc: "Stress and anxiety from writing lengthy assignments." }
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 sm:p-8 lg:p-10 min-h-[160px] flex items-center border-b md:border-b-0 md:border-r border-[#cdcfcd] last:border-0"
+              >
+                <div className="space-y-3">
+                  <p className="font-medium text-lg leading-snug">{item.title}</p>
+                  <p className="text-[#5d655f] leading-relaxed text-sm sm:text-base">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Built Around Your Learning Style - Static */}
+      <section className="bg-white py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-40">
+        <div className="max-w-[1127px] mx-auto space-y-16 sm:space-y-20 lg:space-y-24">
+          <div className="text-center space-y-4 sm:space-y-6">
+            <p className="text-[#7cac8a] text-sm font-semibold tracking-[0.1em] uppercase">Our Approach</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]">
+              <span className="block">Built Around</span>
+              <span><em className="font-semibold not-italic text-[#3c8350]">Your</em> Learning Style</span>
+            </h2>
+          </div>
+
+          <div className="space-y-16 sm:space-y-20 lg:space-y-28">
+            <StaticFeature
+              number="01"
+              title="Simplified, readable text and structured explanations."
+              description="AI-powered text simplification breaks down complex content into clear, digestible language without losing the meaning."
+              icon={<BookIcon />}
+              reverse={false}
+            />
+
+            <div className="border-t border-[#cdcfcd]" />
+
+            <StaticFeature
+              number="02"
+              title="Individual needs matter. You choose your perfect settings."
+              description="Fully customizable reader mode with font choices, spacing, color overlays, and contrast settings tuned to you."
+              icon={<SettingsIcon />}
+              reverse={true}
+            />
+
+            <div className="border-t border-[#cdcfcd]" />
+
+            <StaticFeature
+              number="03"
+              title="Multisensory learning is key."
+              description="Text-to-speech, visual highlights, and interactive tools engage multiple senses to reinforce comprehension and memory."
+              icon={<HeadphonesIcon />}
+              reverse={false}
+            />
+
+            <div className="border-t border-[#cdcfcd]" />
+
+            <StaticFeature
+              number="04"
+              title="Reduce writing stress, leverage your verbal strengths."
+              description="Voice-to-text and AI writing assistance transform how you express ideas — no more blank-page anxiety."
+              icon={<MicIcon />}
+              reverse={true}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Three Steps - Static */}
+      <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-40">
+        <div className="max-w-4xl mx-auto space-y-12 sm:space-y-16">
+          <div className="text-center space-y-4 sm:space-y-6">
+            <p className="text-[#7cac8a] text-sm font-semibold tracking-[0.1em] uppercase">Process</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-[-0.04em]">
+              <span className="block">Three Steps to</span>
+              <span><em className="font-semibold not-italic text-[#3c8350]">Easier</em> Learning</span>
+            </h2>
+          </div>
+
+          <div className="relative space-y-12 sm:space-y-16">
+            <div className="absolute left-[30px] sm:left-[62px] top-[60px] sm:top-[80px] bottom-[60px] sm:bottom-[80px] w-px bg-[#cdcfcd] hidden md:block" />
+
+            {[
+              { num: 1, title: "Upload Your Content", desc: "Drop in any .docx, PDF, or image file. LexiAssist instantly processes your document and prepares it for accessible reading." },
+              { num: 2, title: "Choose Your Tools", desc: "Activate text-to-speech, AI simplification, or open Reader Mode to customize every aspect of your reading experience." },
+              { num: 3, title: "Learn Effortlessly", desc: "Read, study, and write with reduced stress and increased comprehension. Your learning, on your terms." }
+            ].map((step) => (
+              <div key={step.num} className="flex gap-6 sm:gap-8 lg:gap-28 items-start">
+                <div className="flex-shrink-0 size-[60px] sm:size-[80px] lg:size-[123px] rounded-full bg-[#193722] flex items-center justify-center text-white text-xl sm:text-2xl lg:text-4xl tracking-tight shadow-md">
+                  {step.num}
+                </div>
+                <div className="flex-1 space-y-2 sm:space-y-4 pt-2 sm:pt-6">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl leading-tight tracking-tight">{step.title}</h3>
+                  <p className="text-base sm:text-lg text-[#5d655f] leading-relaxed">{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Static */}
+      <section className="relative py-20 sm:py-24 lg:py-32 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black from-[36%] to-[#011f0a] to-[88%]">
+          <img alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" src={imgCtaBackground} />
+        </div>
+        <div className="relative max-w-5xl mx-auto text-center space-y-8 sm:space-y-12 lg:space-y-16">
+          <div className="space-y-4 sm:space-y-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight tracking-[-0.04em]">
+              Built on Evidence-Based Dyslexia Learning Research.
+            </h2>
+            <p className="text-xl sm:text-2xl lg:text-3xl text-[#cdcfcd] leading-tight tracking-[-0.02em]">
+              Unlock easier learning
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Get Started</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer - Static */}
+      <footer className="bg-white py-6 sm:py-8 px-4 sm:px-6 lg:px-8 xl:px-40">
+        <div className="max-w-[1128px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Logo href="/" size="md" />
+          <p className="text-sm text-[#5d655f] text-center">
+            ©2026 LexiAssist. All rights reserved
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
 
 // Parallax Feature Component
-function ParallaxFeature({ 
-  number, 
-  title, 
-  description, 
-  icon, 
-  reverse 
-}: { 
-  number: string; 
-  title: string; 
-  description: string; 
+function ParallaxFeature({
+  number,
+  title,
+  description,
+  icon,
+  reverse
+}: {
+  number: string;
+  title: string;
+  description: string;
   icon: React.ReactNode;
   reverse: boolean;
 }) {
@@ -657,12 +723,12 @@ function ParallaxFeature({
     target: ref,
     offset: ["start end", "end start"]
   });
-  
+
   const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
   const iconY = useTransform(scrollYProgress, [0, 1], [30, -30]);
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${reverse ? 'lg:flex-row-reverse' : ''}`}
       initial={{ opacity: 0, y: 50 }}
@@ -670,11 +736,11 @@ function ParallaxFeature({
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.7 }}
     >
-      <motion.div 
+      <motion.div
         className={`space-y-4 ${reverse ? 'lg:order-2' : ''}`}
         style={{ y: reverse ? undefined : y }}
       >
-        <motion.div 
+        <motion.div
           className="text-[#eff0ef] text-7xl sm:text-8xl lg:text-[128px] leading-none tracking-[-0.04em]"
           initial={{ opacity: 0, x: reverse ? 30 : -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -690,13 +756,13 @@ function ParallaxFeature({
           {description}
         </p>
       </motion.div>
-      <motion.div 
+      <motion.div
         className={`flex justify-center ${reverse ? 'lg:order-1' : 'lg:justify-end'}`}
         style={{ y: reverse ? y : iconY }}
       >
-        <motion.div 
+        <motion.div
           className="size-[280px] sm:size-[320px] lg:size-[376px] rounded-full bg-[#193722] flex items-center justify-center shadow-lg cursor-pointer"
-          whileHover={{ 
+          whileHover={{
             scale: 1.08,
             boxShadow: '0 30px 60px rgba(25, 55, 34, 0.4)',
             rotate: reverse ? -5 : 5
@@ -710,6 +776,42 @@ function ParallaxFeature({
   );
 }
 
+// Static Feature Component (for reduced motion)
+function StaticFeature({
+  number,
+  title,
+  description,
+  icon,
+  reverse
+}: {
+  number: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  reverse: boolean;
+}) {
+  return (
+    <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${reverse ? 'lg:flex-row-reverse' : ''}`}>
+      <div className={`space-y-4 ${reverse ? 'lg:order-2' : ''}`}>
+        <div className="text-[#eff0ef] text-7xl sm:text-8xl lg:text-[128px] leading-none tracking-[-0.04em]">
+          {number}
+        </div>
+        <h3 className="text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-[-0.03em]">
+          {title}
+        </h3>
+        <p className="text-base sm:text-lg text-[#5d655f] leading-relaxed">
+          {description}
+        </p>
+      </div>
+      <div className={`flex justify-center ${reverse ? 'lg:order-1' : 'lg:justify-end'}`}>
+        <div className="size-[280px] sm:size-[320px] lg:size-[376px] rounded-full bg-[#193722] flex items-center justify-center shadow-lg">
+          {icon}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // CTA Section with Parallax
 function CTASection() {
   const ref = useRef<HTMLElement>(null);
@@ -717,25 +819,25 @@ function CTASection() {
     target: ref,
     offset: ["start end", "end start"]
   });
-  
+
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
   const textY = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   return (
     <section ref={ref} className="relative py-20 sm:py-24 lg:py-32 px-4 overflow-hidden">
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-gradient-to-b from-black from-[36%] to-[#011f0a] to-[88%]"
         style={{ y: backgroundY }}
       >
         <img alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" src={imgCtaBackground} />
       </motion.div>
-      <motion.div 
+      <motion.div
         className="relative max-w-5xl mx-auto text-center space-y-8 sm:space-y-12 lg:space-y-16"
         style={{ y: textY, opacity }}
       >
         <div className="space-y-4 sm:space-y-6">
-          <motion.h2 
+          <motion.h2
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight tracking-[-0.04em]"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -744,7 +846,7 @@ function CTASection() {
           >
             Built on Evidence-Based Dyslexia Learning Research.
           </motion.h2>
-          <motion.p 
+          <motion.p
             className="text-xl sm:text-2xl lg:text-3xl text-[#cdcfcd] leading-tight tracking-[-0.02em]"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -754,14 +856,14 @@ function CTASection() {
             Unlock easier learning
           </motion.p>
         </div>
-        <motion.div 
+        <motion.div
           className="flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <Button variant="white" href="/register">Get Started</Button>
+          <Button variant="white" href="/waitlist">Get Started</Button>
         </motion.div>
       </motion.div>
     </section>

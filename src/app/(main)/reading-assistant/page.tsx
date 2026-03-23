@@ -3,18 +3,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { useState, useRef } from 'react';
-import {
-  FileText,
-  Upload,
-  Copy,
-  Check,
-  Save,
-  Sparkles,
-  BookOpen,
-  Clock,
-  Download,
-  Trash2,
-} from 'lucide-react';
+import { Icon } from '@/components/Icon';
 import { toast } from 'sonner';
 
 type SummaryLength = 'short' | 'medium' | 'detailed';
@@ -127,7 +116,7 @@ export default function ReadingAssistantPage() {
         />
         <Button
           variant="outline"
-          leftIcon={<Upload size={18} />}
+          leftIcon={<Icon iconName="upload" size={18} />}
           onClick={() => fileInputRef.current?.click()}
         >
           Upload File
@@ -144,7 +133,7 @@ export default function ReadingAssistantPage() {
                 variant="ghost"
                 size="sm"
                 onClick={handleClear}
-                leftIcon={<Trash2 size={16} />}
+                leftIcon={<Icon iconName="trash-2" size={16} />}
                 disabled={!text}
               >
                 Clear
@@ -195,7 +184,7 @@ export default function ReadingAssistantPage() {
                     variant="ghost"
                     size="sm"
                     onClick={handleCopy}
-                    leftIcon={copied ? <Check size={16} /> : <Copy size={16} />}
+                    leftIcon={copied ? <Icon iconName="check" size={16} /> : <Icon iconName="copy" size={16} />}
                   >
                     {copied ? 'Copied' : 'Copy'}
                   </Button>
@@ -203,7 +192,7 @@ export default function ReadingAssistantPage() {
                     variant="ghost"
                     size="sm"
                     onClick={handleSave}
-                    leftIcon={<Save size={16} />}
+                    leftIcon={<Icon iconName="save" size={16} />}
                   >
                     Save
                   </Button>
@@ -223,7 +212,7 @@ export default function ReadingAssistantPage() {
             ) : (
               <div className="h-64 sm:h-80 flex flex-col items-center justify-center text-center">
                 <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                  <Sparkles className="h-8 w-8 text-slate-400" />
+                  <Icon iconName="sparkles" className="h-8 w-8 text-slate-400" />
                 </div>
                 <p className="text-slate-500 text-sm">
                   Your AI-generated summary will appear here
@@ -249,7 +238,7 @@ export default function ReadingAssistantPage() {
           size="lg"
           onClick={handleSummarize}
           isLoading={isSummarizing}
-          leftIcon={<Sparkles size={20} />}
+          leftIcon={<Icon iconName="sparkles" size={20} />}
           disabled={!text.trim()}
         >
           {isSummarizing ? 'Generating...' : 'Generate Summary'}
@@ -260,7 +249,7 @@ export default function ReadingAssistantPage() {
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 flex-shrink-0">
-              <FileText className="h-5 w-5 text-blue-600" />
+              <Icon iconName="file-text" className="h-5 w-5 text-blue-600" />
             </div>
             <div className="min-w-0">
               <p className="font-medium text-slate-900 text-sm">Upload Documents</p>
@@ -271,7 +260,7 @@ export default function ReadingAssistantPage() {
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 flex-shrink-0">
-              <Clock className="h-5 w-5 text-purple-600" />
+              <Icon iconName="clock" className="h-5 w-5 text-purple-600" />
             </div>
             <div className="min-w-0">
               <p className="font-medium text-slate-900 text-sm">Adjustable Length</p>
@@ -282,7 +271,7 @@ export default function ReadingAssistantPage() {
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 flex-shrink-0">
-              <BookOpen className="h-5 w-5 text-green-600" />
+              <Icon iconName="open-book" className="h-5 w-5 text-green-600" />
             </div>
             <div className="min-w-0">
               <p className="font-medium text-slate-900 text-sm">Save to Library</p>
@@ -303,7 +292,7 @@ export default function ReadingAssistantPage() {
                   className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <FileText size={16} className="text-slate-400 flex-shrink-0" />
+                    <Icon iconName="file-text" size={16} className="text-slate-400 flex-shrink-0" />
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-700 truncate">{item.title}</p>
                       <p className="text-xs text-slate-500">

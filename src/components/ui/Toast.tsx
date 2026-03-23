@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { CheckCircle, AlertCircle, Info, XCircle, X } from 'lucide-react';
+import { Icon } from "@/components/Icon";
 import { useEffect, useState } from 'react';
 import { create } from 'zustand';
 
@@ -49,11 +49,11 @@ export const toast = {
   },
 };
 
-const icons = {
-  success: CheckCircle,
-  error: XCircle,
-  warning: AlertCircle,
-  info: Info,
+const iconNames = {
+  success: 'check-circle' as const,
+  error: 'x' as const,
+  warning: 'alert-circle' as const,
+  info: 'info' as const,
 };
 
 const styles = {
@@ -73,7 +73,7 @@ const iconStyles = {
 function ToastItem({ toast }: { toast: Toast }) {
   const { removeToast } = useToastStore();
   const [isExiting, setIsExiting] = useState(false);
-  const Icon = icons[toast.type];
+  const iconName = iconNames[toast.type];
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -93,7 +93,7 @@ function ToastItem({ toast }: { toast: Toast }) {
       )}
       role="alert"
     >
-      <Icon className={cn('h-5 w-5 shrink-0', iconStyles[toast.type])} />
+      <Icon name={iconName} size={20} className={cn('shrink-0', iconStyles[toast.type])} />
       <p className="flex-1 text-sm font-medium">{toast.message}</p>
       <button
         onClick={() => {
@@ -102,7 +102,7 @@ function ToastItem({ toast }: { toast: Toast }) {
         }}
         className="shrink-0 rounded p-1 hover:bg-black/5"
       >
-        <X className="h-4 w-4" />
+        <Icon name="close" size={16} />
       </button>
     </div>
   );

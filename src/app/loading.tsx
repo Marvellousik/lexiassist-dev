@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react';
+import { Icon } from "@/components/Icon";
 
 export default function Loading() {
   return (

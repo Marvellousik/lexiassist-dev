@@ -3,7 +3,7 @@
  * Returns fake data for development when backend is not available
  */
 
-import { User, Quiz, StudySet, Summary, CourseMaterial } from '@/types';
+import { User, Quiz, StudySet, Summary } from '@/types';
 
 // Mock User Data
 export const mockUser: User = {
@@ -104,43 +104,6 @@ export const mockStudySets: StudySet[] = [
   },
 ];
 
-// Mock Course Materials
-export const mockMaterials: CourseMaterial[] = [
-  {
-    id: '1',
-    title: 'Introduction to Algorithms',
-    fileName: 'intro_algorithms.pdf',
-    fileType: 'pdf',
-    fileSize: 2500000,
-    subject: 'Computer Science',
-    uploadedBy: '1',
-    uploadedAt: new Date().toISOString(),
-    url: '#',
-  },
-  {
-    id: '2',
-    title: 'Biology Lecture Notes',
-    fileName: 'bio_lectures.docx',
-    fileType: 'docx',
-    fileSize: 1200000,
-    subject: 'Biology',
-    uploadedBy: '1',
-    uploadedAt: new Date().toISOString(),
-    url: '#',
-  },
-  {
-    id: '3',
-    title: 'History Timeline',
-    fileName: 'history_timeline.pptx',
-    fileType: 'pptx',
-    fileSize: 3500000,
-    subject: 'History',
-    uploadedBy: '1',
-    uploadedAt: new Date().toISOString(),
-    url: '#',
-  },
-];
-
 // Mock AI Response
 export function generateMockAIResponse(prompt: string, type: string) {
   const responses: Record<string, string> = {
@@ -206,19 +169,6 @@ export const mockApi = {
   // Study Sets / Flashcards
   getStudySets: () => mockStudySets,
   getStudySetById: (id: string) => mockStudySets.find(s => s.id === id),
-  
-  // Course Materials
-  getMaterials: () => mockMaterials,
-  uploadMaterial: (file: File) => ({
-    id: Date.now().toString(),
-    title: file.name,
-    fileName: file.name,
-    fileType: file.name.split('.').pop() as any,
-    fileSize: file.size,
-    uploadedBy: '1',
-    uploadedAt: new Date().toISOString(),
-    url: '#',
-  }),
   
   // AI
   generateContent: (prompt: string, type: string) => ({

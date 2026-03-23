@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Button from '@/components/ui/Button';
-import { AlertTriangle, RefreshCcw } from 'lucide-react';
+import { Icon } from "@/components/Icon";
 
 interface ErrorProps {
   error: Error & { digest?: string };

@@ -45,19 +45,6 @@ export interface StudyMaterial {
   updatedAt: string;
 }
 
-// Course Material Types
-export interface CourseMaterial {
-  id: string;
-  title: string;
-  fileName: string;
-  fileType: 'pdf' | 'docx' | 'txt' | 'pptx';
-  fileSize: number;
-  subject: string;
-  uploadedBy: string;
-  uploadedAt: string;
-  url: string;
-}
-
 // Quiz Types
 export interface Quiz {
   id: string;
@@ -166,7 +153,7 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
-  attachments?: CourseMaterial[];
+
 }
 
 export interface ChatConversation {

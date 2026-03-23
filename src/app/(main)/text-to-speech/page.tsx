@@ -3,16 +3,8 @@
 import { Card, CardContent } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { useState, useRef, useEffect } from 'react';
-import {
-  Play,
-  Pause,
-  Download,
-  Trash2,
-  Volume2,
-  Type,
-  Settings,
-  Headphones,
-} from 'lucide-react';
+import { Icon } from '@/components/Icon';
+import { Trash2, Headphones } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface TTSHistoryItem {
@@ -107,7 +99,7 @@ export default function TextToSpeechPage() {
           variant="ghost"
           size="sm"
           onClick={() => setShowSettings(!showSettings)}
-          leftIcon={<Settings size={18} />}
+          leftIcon={<Icon name="settings" size={18} />
         >
           Settings
         </Button>
@@ -118,7 +110,7 @@ export default function TextToSpeechPage() {
           <CardContent className="p-3 sm:p-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
               <div className="flex flex-wrap items-center gap-3">
-                <Volume2 size={18} className="text-slate-500" />
+                <Icon name="volume" size={18} className="text-slate-500" />
                 <span className="text-sm font-medium text-slate-700">Speed:</span>
                 <div className="flex gap-2">
                   {[0.5, 1, 1.5, 2].map((rate) => (
@@ -144,7 +136,7 @@ export default function TextToSpeechPage() {
       <Card className="border-2 border-dashed border-slate-200">
         <CardContent className="p-4 sm:p-6">
           <div className="flex items-center gap-2 mb-3 sm:mb-4 text-slate-500">
-            <Type size={18} />
+            <Icon name="font" size={18} />
             <span className="text-sm font-medium">Enter your text</span>
           </div>
           <textarea
@@ -169,7 +161,7 @@ export default function TextToSpeechPage() {
               </Button>
               <Button
                 onClick={handleSpeak}
-                leftIcon={isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                leftIcon={isPlaying ? <Icon name="pause" size={18} /> : <Icon name="play" size={18} />}
                 className={isPlaying ? 'bg-amber-500 hover:bg-amber-600' : ''}
               >
                 {isPlaying ? 'Stop' : 'Convert'}
@@ -194,7 +186,7 @@ export default function TextToSpeechPage() {
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 flex-shrink-0">
-              <Settings className="h-5 w-5 text-purple-600" />
+              <Icon name="settings" className="h-5 w-5 text-purple-600" />
             </div>
             <div className="min-w-0">
               <p className="font-medium text-slate-900 text-sm">Speed Control</p>
@@ -205,7 +197,7 @@ export default function TextToSpeechPage() {
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 flex-shrink-0">
-              <Download className="h-5 w-5 text-green-600" />
+              <Icon name="download" className="h-5 w-5 text-green-600" />
             </div>
             <div className="min-w-0">
               <p className="font-medium text-slate-900 text-sm">Download Audio</p>
@@ -231,7 +223,7 @@ export default function TextToSpeechPage() {
                   className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <Volume2 size={16} className="text-slate-400 flex-shrink-0" />
+                    <Icon name="volume" size={16} className="text-slate-400 flex-shrink-0" />
                     <span className="text-sm text-slate-700 truncate">
                       {item.text}
                     </span>

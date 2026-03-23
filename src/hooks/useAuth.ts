@@ -65,9 +65,9 @@ export function useAuth() {
   });
 
   // Login mutation
-  const loginMutation = useMutation({
+  const loginMutation = useMutation<AuthResponse, Error, LoginCredentials>({
     mutationFn: loginUser,
-    onSuccess: (data) => {
+    onSuccess: (data: AuthResponse) => {
       setAuthUser(data.user);
       queryClient.setQueryData(AUTH_KEYS.user, data.user);
       toast.success('Welcome back!');
@@ -79,9 +79,9 @@ export function useAuth() {
   });
 
   // Register mutation
-  const registerMutation = useMutation({
+  const registerMutation = useMutation<AuthResponse, Error, RegisterCredentials>({
     mutationFn: registerUser,
-    onSuccess: (data) => {
+    onSuccess: (data: AuthResponse) => {
       setAuthUser(data.user);
       queryClient.setQueryData(AUTH_KEYS.user, data.user);
       toast.success('Account created successfully!');

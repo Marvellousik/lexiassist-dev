@@ -3,17 +3,11 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { useState } from 'react';
+import { Icon } from '@/components/Icon';
 import {
-  Brain,
-  Clock,
-  Trophy,
-  CheckCircle2,
-  XCircle,
-  ArrowRight,
   Sparkles,
   FileText,
   Upload,
-  RotateCcw,
   ChevronRight,
   Target,
   Zap,
@@ -187,7 +181,7 @@ export default function QuizzesPage() {
         <Card className="text-center py-8 sm:py-12">
           <CardContent>
             <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-[#3c8350]/10 flex items-center justify-center">
-              <Trophy className="h-8 w-8 sm:h-10 sm:w-10 text-[#3c8350]" />
+              <Icon name="award" className="h-8 w-8 sm:h-10 sm:w-10 text-[#3c8350]" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
               {quizResult.score}%
@@ -199,7 +193,7 @@ export default function QuizzesPage() {
               <Button
                 variant="outline"
                 onClick={resetQuiz}
-                leftIcon={<RotateCcw size={18} />}
+                leftIcon={<Icon name="refresh" size={18} />}
               >
                 Try Again
               </Button>
@@ -232,9 +226,9 @@ export default function QuizzesPage() {
                   >
                     <div className="flex items-start gap-3">
                       {correct ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <Icon name="check-circle" className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                       ) : (
-                        <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        <Icon name="x" className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
                       )}
                       <div className="min-w-0">
                         <p className="font-medium text-slate-900 text-sm">
@@ -275,7 +269,7 @@ export default function QuizzesPage() {
             </span>
           </div>
           <div className="flex items-center gap-2 text-sm text-slate-500">
-            <Clock size={16} />
+            <Icon name="clock" size={16} />
             <span>No time limit</span>
           </div>
         </div>
@@ -320,10 +314,10 @@ export default function QuizzesPage() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm">{option}</span>
                       {isAnswered && option === currentQuestion.correctAnswer && (
-                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <Icon name="check-circle" className="h-5 w-5 text-green-600 flex-shrink-0" />
                       )}
                       {isAnswered && selectedAnswer === option && !isCorrect && (
-                        <XCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
+                        <Icon name="x" className="h-5 w-5 text-red-600 flex-shrink-0" />
                       )}
                     </div>
                   </button>
@@ -394,7 +388,7 @@ export default function QuizzesPage() {
           <CardContent className="p-3 sm:p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 flex-shrink-0">
-                <Trophy className="h-5 w-5 text-purple-600" />
+                <Icon name="award" className="h-5 w-5 text-purple-600" />
               </div>
               <div className="min-w-0">
                 <p className="text-xs sm:text-sm text-slate-600">Quizzes Taken</p>
@@ -486,14 +480,14 @@ export default function QuizzesPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#3c8350]/10 flex-shrink-0">
-                <Brain className="h-6 w-6 text-[#3c8350]" />
+                <Icon name="brain" className="h-6 w-6 text-[#3c8350]" />
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900">General Knowledge Quiz</h3>
                 <p className="text-sm text-slate-500">{sampleQuestions.length} questions • Mixed topics</p>
               </div>
             </div>
-            <Button onClick={startQuiz} rightIcon={<ArrowRight size={18} />} className="text-sm">
+            <Button onClick={startQuiz} rightIcon={<Icon name="arrow-right" size={18} />} className="text-sm">
               Start Quiz
             </Button>
           </div>

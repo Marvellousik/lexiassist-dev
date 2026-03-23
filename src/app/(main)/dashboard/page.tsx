@@ -3,14 +3,7 @@
 import { Card } from '@/components/ui/Card';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
-import {
-  Settings,
-  Moon,
-  ChevronDown,
-  FileText,
-  Calendar,
-  Clock,
-} from 'lucide-react';
+import { Icon } from "@/components/Icon";
 
 // Tool card data
 const tools = [
@@ -87,10 +80,10 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-4 sm:gap-5">
           <button className="p-1 text-[#6b7280] hover:text-[#3c8350] transition-colors">
-            <Settings size={22} strokeWidth={1.7} />
+            <Icon name="settings" size={22} strokeWidth={1.7} />
           </button>
           <button className="p-1 text-[#6b7280] hover:text-[#3c8350] transition-colors">
-            <Moon size={22} strokeWidth={1.7} />
+            <Icon name="moon" size={22} strokeWidth={1.7} />
           </button>
           <div className="flex items-center gap-1.5 cursor-pointer">
             <div className="w-10 h-10 rounded-full bg-[#b2c9b0] flex items-center justify-center overflow-hidden">
@@ -100,7 +93,7 @@ export default function DashboardPage() {
                 <ellipse cx="19" cy="32" rx="11" ry="8" fill="#6b9c62" />
               </svg>
             </div>
-            <ChevronDown size={14} className="text-[#6b7280]" />
+            <Icon name="chevron-down" size={14} className="text-[#6b7280]" />
           </div>
         </div>
       </div>
@@ -157,14 +150,14 @@ export default function DashboardPage() {
               <div className="flex flex-col items-end gap-1">
                 <div className="flex items-center gap-1.5 text-xs text-[#555f6e]">
                   {item.typeIcon === 'quiz' ? (
-                    <Calendar size={14} className="text-[#8a95a3]" />
+                    <Icon name="calendar" size={14} className="text-[#8a95a3]" />
                   ) : (
-                    <FileText size={14} className="text-[#8a95a3]" />
+                    <Icon name="file-text" size={14} className="text-[#8a95a3]" />
                   )}
                   <span>{item.type}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-[#555f6e]">
-                  <Clock size={14} className="text-[#8a95a3]" />
+                  <Icon name="clock" size={14} className="text-[#8a95a3]" />
                   <span>{item.date}</span>
                 </div>
               </div>

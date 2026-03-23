@@ -3,20 +3,12 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { useState } from 'react';
+import { Icon } from '@/components/Icon';
 import {
-  Plus,
   Shuffle,
-  RotateCcw,
-  ChevronLeft,
-  ChevronRight,
-  FlipHorizontal,
   Save,
   Sparkles,
-  Layers,
   BookOpen,
-  Trash2,
-  Edit3,
-  Check,
   X,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -158,7 +150,7 @@ export default function FlashcardsPage() {
             variant="outline"
             size="sm"
             onClick={() => setShowCreateModal(true)}
-            leftIcon={<Plus size={16} />}
+            leftIcon={<Icon name="plus" size={16} />
           >
             Add Card
           </Button>
@@ -166,7 +158,7 @@ export default function FlashcardsPage() {
             variant="outline"
             size="sm"
             onClick={handleSaveSet}
-            leftIcon={<Save size={16} />}
+            leftIcon={<Icon name="save" size={16} />
           >
             Save Set
           </Button>
@@ -190,7 +182,7 @@ export default function FlashcardsPage() {
             className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
             title="Reset"
           >
-            <RotateCcw size={18} />
+            <Icon name="refresh" size={18} />
           </button>
         </div>
       </div>
@@ -247,14 +239,14 @@ export default function FlashcardsPage() {
         <Button
           variant="outline"
           onClick={handlePrevious}
-          leftIcon={<ChevronLeft size={18} />}
+          leftIcon={<Icon name="chevron-left" size={18} />}
           className="text-sm"
         >
           <span className="hidden sm:inline">Previous</span>
         </Button>
         <Button
           onClick={handleFlip}
-          leftIcon={<FlipHorizontal size={18} />}
+          leftIcon={<Icon name="refresh" size={18} />}
           className="text-sm"
         >
           Flip Card
@@ -262,7 +254,7 @@ export default function FlashcardsPage() {
         <Button
           variant="outline"
           onClick={handleNext}
-          rightIcon={<ChevronRight size={18} />}
+          rightIcon={<Icon name="chevron-right" size={18} />}
           className="text-sm"
         >
           <span className="hidden sm:inline">Next</span>
@@ -295,7 +287,7 @@ export default function FlashcardsPage() {
         <Card className="cursor-pointer hover:shadow-md transition-all">
           <CardContent className="p-3 sm:p-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 flex-shrink-0">
-              <Layers className="h-5 w-5 text-green-600" />
+              <Icon name="layers" className="h-5 w-5 text-green-600" />
             </div>
             <div className="min-w-0">
               <p className="font-medium text-slate-900 text-sm">Study Sets</p>
@@ -380,7 +372,7 @@ export default function FlashcardsPage() {
                 <Button
                   className="flex-1"
                   onClick={handleAddCard}
-                  leftIcon={<Check size={16} />}
+                  leftIcon={<Icon name="check" size={16} />}
                 >
                   Add Card
                 </Button>

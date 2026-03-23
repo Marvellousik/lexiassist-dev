@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff } from "lucide-react";
+import { Icon } from "@/components/Icon";
 import Logo from "@/components/auth/Logo";
 import Image from "next/image";
 
@@ -72,18 +72,14 @@ export default function RegisterPage() {
         </div>
         
         {/* Image Asset Container */}
-        <div className="relative w-full max-w-[480px] aspect-square">
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-center text-[#3C8350]/60">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-2xl bg-[#3C8350]/10 flex items-center justify-center">
-                <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <p className="text-sm font-medium">Add your image asset here</p>
-              <p className="text-xs mt-1">Place image in /public/images/register-asset.png</p>
-            </div>
-          </div>
+        <div className="absolute inset-0">
+          <Image
+            src="/images/Girl out the window.svg"
+            alt="Girl looking out window"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
       </div>
 
@@ -169,7 +165,7 @@ export default function RegisterPage() {
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-[#667185] hover:text-[#101928] transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <Icon name="eye-off" size={18} /> : <Icon name="eye" size={18} />}
                 </button>
               </div>
             </div>
