@@ -13,7 +13,7 @@ function SocialLoginButton({
   provider,
   label
 }: {
-  provider: "google" | "linkedin";
+  provider: "google" | "link";
   label: string;
 }) {
   const iconSrc = provider === "google"
